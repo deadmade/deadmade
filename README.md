@@ -1,6 +1,6 @@
 - 👋 Hi, I’m @deadmade
 - 👀 I’m interested in Computers and Programming
-- 🌱 I’m currently learning Computer Scicne at the DHBW Heidenheim
+- 🌱 I’m currently learning Computer Science at the DHBW Heidenheim
 - 📫 How to reach me: Just look at my Github Website: https://deadmade.github.io/
 - 😄 Pronouns: He/Him
 - ⚡ Fun fact: Cakes are the best
