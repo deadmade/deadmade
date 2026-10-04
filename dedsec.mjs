@@ -1,129 +1,96 @@
 // Generates dedsec.svg: node dedsec.mjs
 import { writeFileSync } from 'node:fs';
 
-const SPEED = 0.15; // seconds per typed char (jittered ±40%)
-const CW = 9;       // char width; 15px text is forced onto this grid via textLength
-const CMD_X = 229;  // where commands start after the prompt (20 chars + space)
+const CW = 9; // char width; 15px text is forced onto this grid via textLength where alignment matters
 
 let seed = 7;
 const rand = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
 const s = (n) => `${+n.toFixed(2)}s`;
-const show = (t) => `<set attributeName="visibility" to="visible" begin="${s(t)}" fill="freeze"/>`;
+const delay = (t, extra = '') => `style="animation-delay:${s(t)}${extra}"`;
+// visible only between t0 and t1 (SMIL, so it can switch off again)
+const during = (t0, t1) => `visibility="hidden"><set attributeName="visibility" to="visible" begin="${s(t0)}" end="${s(t1)}"/`;
 
 let out = '';
 let y = 172;
-let t = 0.3;
-
-// Types `text` at (x, y) starting at t; the cursor shows from `from` until `until`. Returns when typing ends.
-function type(text, x, cls, perChar, from, until) {
-  const n = text.length;
-  const delays = Array.from({ length: n }, () => perChar * (0.6 + 0.8 * rand()));
-  const total = delays.reduce((a, b) => a + b, 0) + perChar;
-  let acc = 0;
-  const keyTimes = [0, ...delays.map((d) => +((acc += d) / total).toFixed(4))].join(';');
-  const steps = Array.from({ length: n + 1 }, (_, i) => i * CW).join(';');
-  const id = `k${out.length}`;
-  const anim = (attr, tag, extra = '') =>
-    `<${tag} attributeName="${attr}" ${extra}calcMode="discrete" values="${steps}" keyTimes="${keyTimes}" begin="${s(t)}" dur="${s(total)}" fill="freeze"/>`;
-  out += `<clipPath id="${id}"><rect x="${x}" y="${y - 17}" height="22" width="0">${anim('width', 'animate')}</rect></clipPath>\n`;
-  out += `<text x="${x}" y="${y}"${cls ? ` class="${cls}"` : ''} textLength="${n * CW}" clip-path="url(#${id})">${esc(text)}</text>\n`;
-  out += `<rect class="cur" x="${x}" y="${y - 13}" width="9" height="16" visibility="hidden"><set attributeName="visibility" to="visible" begin="${s(from)}" end="${s(until(t + total))}"/>${anim('transform', 'animateTransform', 'type="translate" ')}</rect>\n`;
-  return t + total;
-}
-
-const esc = (str) => str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-
-// Prompt + typed command; `output(at)` draws the result and advances y.
-function cmd(command, output) {
-  const from = t;
-  out += `<text x="40" y="${y}" textLength="180" visibility="hidden">${show(t)}<tspan class="dim">[</tspan><tspan class="m">deadmade@deadPc</tspan><tspan class="dim">:</tspan><tspan class="c">~</tspan><tspan class="dim">]$</tspan></text>\n`;
-  t += 0.6;
-  const at = type(command, CMD_X, '', SPEED, from, (end) => end + 0.4) + 0.4;
-  y += 22;
-  t = (output(at) ?? at) + 0.8;
-  y += 10;
-}
-
-function lines(at, ...rows) {
-  out += `<g visibility="hidden">${show(at)}\n`;
-  for (const r of rows) (out += `<text x="40" y="${y}">${r}</text>\n`), (y += 22);
-  out += '</g>\n';
-}
 
 const TAGS = { OK: ['[  OK  ]', 'c'], WARN: ['[ WARN ]', 'y'], FAILED: ['[FAILED]', 'm'] };
+const tag = (status) => `<tspan class="${TAGS[status][1]}">${TAGS[status][0]}</tspan>`;
 
-// systemd-style startup lines printed in quick succession. Returns when the last one is shown.
-function startup(at, items) {
-  for (const [status, msg] of items) {
-    const [tag, cls] = TAGS[status];
-    out += `<text x="40" y="${y}" visibility="hidden">${show(at)}<tspan class="${cls}">${tag}</tspan> ${msg}</text>\n`;
-    at += 0.2 + 0.3 * rand();
-    y += 22;
-  }
-  return at;
+// One log line that slides in with a glow at time t.
+function line(t, content, x = 40, attrs = '') {
+  out += `<text x="${x}" y="${y}" class="in" ${delay(t)}${attrs}>${content}</text>\n`;
 }
 
-// "Checking <name> ....." lines, each resolving to a status after a pause. Returns when the last one resolves.
-function checks(at, items) {
+function startup(t, items) {
+  for (const [status, msg] of items) {
+    line(t, `${tag(status)} ${msg}`);
+    t += 0.2 + 0.3 * rand();
+    y += 22;
+  }
+  return t;
+}
+
+// "Checking <name> ....." lines: spinner + progress bar, then the status replaces them. Returns when the last resolves.
+function checks(t, items) {
   for (const [name, status, note] of items) {
     const label = `Checking ${name} `.padEnd(32, '.');
-    const [tag, cls] = TAGS[status];
-    out += `<text x="40" y="${y}" textLength="${label.length * CW}" visibility="hidden">${show(at)}${label.replace(/\.+$/, '<tspan class="dim">$&</tspan>')}</text>\n`;
-    at += 0.5 + 0.6 * rand();
-    out += `<text x="${40 + (label.length + 1) * CW}" y="${y}" visibility="hidden">${show(at)}<tspan class="${cls}">${tag}</tspan> ${note}</text>\n`;
-    at += 0.25;
+    const x = 40 + (label.length + 1) * CW;
+    const d = 0.6 + 0.6 * rand();
+    line(t, label.replace(/\.+$/, '<tspan class="dim">$&</tspan>'), 40, ` textLength="${label.length * CW}"`);
+    out += `<g ${during(t, t + d)}>
+<circle class="spin" cx="${x + 6}" cy="${y - 5}" r="5"/>
+<rect class="track" x="${x + 18}" y="${y - 10}" width="90" height="8"/>
+<rect class="bar" x="${x + 18}" y="${y - 10}" width="90" height="8" ${delay(t, `;animation-duration:${s(d)}`)}/>
+</g>\n`;
+    line(t + d, `${tag(status)} ${note}`, x);
+    t += d + 0.15;
     y += 22;
   }
   const count = (st) => items.filter((i) => i[1] === st).length;
-  lines(at, `<tspan class="dim">${items.length} systems checked · ${count('FAILED')} failed · ${count('WARN')} warnings</tspan>`);
-  return at;
+  line(t, `<tspan class="dim">${items.length} systems checked · ${count('FAILED')} failed · ${count('WARN')} warnings</tspan>`);
+  y += 22;
+  return t + 0.3;
 }
 
-// --- tuigreet-style login, removed from the display once the session starts ---
-out += `<g>\n<text x="400" y="60" class="dim" text-anchor="middle">Sun, 04 Oct 2026 · 23:42</text>
-<rect x="160" y="250" width="480" height="190" rx="4" fill="none" stroke="#00FFEA" stroke-opacity=".7"/>
-<rect x="180" y="240" width="90" height="20" fill="#050505"/><text x="225" y="255" class="c" text-anchor="middle">deadPc</text>
-<text x="400" y="294" text-anchor="middle">Welcome back, operator.</text>
-<text x="190" y="340" class="dim">Username:</text><text x="190" y="372" class="dim">Password:</text>
-<text x="400" y="BAR_Y" text-anchor="middle"><tspan class="c" font-weight="bold">F2</tspan><tspan class="dim"> Change command   </tspan><tspan class="c" font-weight="bold">F3</tspan><tspan class="dim"> Choose session   </tspan><tspan class="c" font-weight="bold">F12</tspan><tspan class="dim"> Power</tspan></text>\n`;
-y = 340;
-t = 1;
-let typed = type('deadmade', 289, '', SPEED, 0.3, (end) => end + 0.3) + 0.3;
-y = 372;
-t = typed;
-typed = type('********', 289, '', 0.1, typed, (end) => end + 0.5) + 0.5;
-out += `<text x="400" y="414" class="dim" text-anchor="middle" visibility="hidden">${show(typed)}Starting session: zsh</text>
-<set attributeName="display" to="none" begin="${s(typed + 1)}" fill="freeze"/>\n</g>\n`;
-const LOGIN_END = typed + 1;
-
-// --- session ---
-y = 172;
-t = startup(LOGIN_END + 0.3, [
+// --- sequence ---
+let t = startup(1.1, [
   ['OK', 'Mounted /home/deadmade'],
   ['OK', 'Started DedSec uplink'],
   ['OK', 'Reached target ctOS bypass'],
   ['OK', 'Logged in as <tspan class="c">deadmade</tspan> <tspan class="dim">// developer · tinkerer · cake enthusiast</tspan>'],
-]) + 0.6;
-y += 16;
-cmd('nix run .#system-status', (at) =>
-  checks(at, [
-    ['studies', 'OK', 'completed, finally'],
-    ['current_project', 'OK', 'building &amp; breaking things'],
-    ['coffee_level', 'WARN', 'critical, refill recommended'],
-    ['sleep_schedule', 'FAILED', 'undefined behaviour'],
-    ['cake_supply', 'OK', 'cakes make everything better'],
-    ['bugs', 'OK', 'reclassified as features'],
-    ['works_on_my_machine', 'OK', 'reproducible, thanks nix'],
-    ['vim_exit', 'WARN', 'still trying :q!'],
-  ]));
-cmd('ls ~/arsenal', (at) =>
-  lines(at, ['.NET', 'Blazor', 'C#', 'Git', 'GitHub', 'LaTeX', 'Markdown', 'Python'].map((d) => `<tspan class="c" font-weight="bold">${d}</tspan>`).join('  ')));
-cmd('exit', (at) => {
-  lines(at, 'logout', 'Connection to deadPc terminated.');
-  out += `<rect class="cur blink" x="40" y="${y - 13}" width="9" height="16" visibility="hidden">${show(at + 0.4)}</rect>\n`;
-});
+]) + 0.3;
 
-const H = y + 20;
+y += 10;
+line(t, '<tspan class="dim">Running system checks...</tspan>');
+y += 22;
+t = checks(t + 0.4, [
+  ['studies', 'OK', 'completed, finally'],
+  ['current_project', 'OK', 'building &amp; breaking things'],
+  ['coffee_level', 'WARN', 'critical, refill recommended'],
+  ['sleep_schedule', 'FAILED', 'undefined behaviour'],
+  ['cake_supply', 'OK', 'cakes make everything better'],
+  ['bugs', 'OK', 'reclassified as features'],
+  ['works_on_my_machine', 'OK', 'reproducible, thanks nix'],
+  ['vim_exit', 'WARN', 'still trying :q!'],
+]);
+
+y += 10;
+line(t, `${tag('OK')} Loaded arsenal`);
+y += 22;
+let ax = 40 + 9 * CW;
+for (const name of ['.NET', 'Blazor', 'C#', 'Git', 'GitHub', 'LaTeX', 'Markdown', 'Python']) {
+  t += 0.08;
+  out += `<text x="${ax}" y="${y}" class="pop c" font-weight="bold" textLength="${name.length * CW}" ${delay(t)}>${name}</text>\n`;
+  ax += (name.length + 2) * CW;
+}
+y += 38;
+
+t += 0.6;
+out += `<g class="in" ${delay(t)}><circle class="pulse" cx="46" cy="${y - 5}" r="5"/></g>\n`;
+line(t, '<tspan class="c" font-weight="bold">SYSTEM ONLINE</tspan>  <tspan class="dim">deadPc · nixos · uptime ∞</tspan>', 60);
+y += 22;
+
+const H = y + 10;
 const banner = [
   '██████╗ ███████╗ █████╗ ██████╗ ███╗   ███╗ █████╗ ██████╗ ███████╗',
   '██╔══██╗██╔════╝██╔══██╗██╔══██╗████╗ ████║██╔══██╗██╔══██╗██╔════╝',
@@ -131,10 +98,10 @@ const banner = [
   '██║  ██║██╔══╝  ██╔══██║██║  ██║██║╚██╔╝██║██╔══██║██║  ██║██╔══╝  ',
   '██████╔╝███████╗██║  ██║██████╔╝██║ ╚═╝ ██║██║  ██║██████╔╝███████╗',
   '╚═════╝ ╚══════╝╚═╝  ╚═╝╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═╝╚═════╝ ╚══════╝',
-].map((l, i) => `<text class="b" x="78" y="${44 + i * 17}" textLength="644" lengthAdjust="spacingAndGlyphs">${l}</text>`).join('\n');
+].map((l, i) => `<text class="b gin${i % 2 ? 'R' : 'L'}" x="78" y="${44 + i * 17}" textLength="644" lengthAdjust="spacingAndGlyphs" ${delay(0.1 + i * 0.08)}>${l}</text>`).join('\n');
 
 writeFileSync(new URL('./dedsec.svg', import.meta.url), `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="800" height="${H}" viewBox="0 0 800 ${H}" role="img" aria-labelledby="t">
-<title id="t">deadmade // DedSec terminal profile on deadPc</title>
+<title id="t">deadmade // DedSec boot log on deadPc</title>
 <!-- generated by dedsec.mjs, edit that instead -->
 <defs>
 <pattern id="scan" width="4" height="4" patternUnits="userSpaceOnUse"><rect width="4" height="1" fill="#00FFEA" opacity=".05"/></pattern>
@@ -147,25 +114,37 @@ text { font-family: 'Fira Code', 'JetBrains Mono', 'DejaVu Sans Mono', Consolas,
 .b { fill: inherit; font-size: 16px; }
 .c { fill: #00FFEA; }
 .m { fill: #FF2A6D; }
-.dim { fill: #6B6B6B; }
-.cur { fill: #00FFEA; }
 .y { fill: #F5D300; }
-.g1 { fill: #00FFEA; opacity: .8; animation: g1 3s infinite steps(1); }
-.g2 { fill: #FF2A6D; opacity: .8; animation: g2 3s infinite steps(1); }
-.blink { animation: blink 1s infinite steps(1); }
-.flicker { animation: flicker 6s infinite; }
-@keyframes blink { 50% { opacity: 0; } }
+.dim { fill: #6B6B6B; }
+.in { opacity: 0; animation: in .35s ease-out both; }
+.pop { opacity: 0; transform-box: fill-box; transform-origin: center; animation: pop .3s ease-out both; }
+.spin { fill: none; stroke: #00FFEA; stroke-width: 2; stroke-dasharray: 20 12; transform-box: fill-box; transform-origin: center; animation: spin .6s linear infinite; }
+.track { fill: none; stroke: #333; }
+.bar { fill: #00FFEA; transform-box: fill-box; transform-origin: left; animation: bar 1s linear both; }
+.pulse { fill: #00FFEA; transform-box: fill-box; transform-origin: center; animation: pulse 1.6s ease-in-out infinite; }
+.ginL { animation: ginL .6s steps(1) both; }
+.ginR { animation: ginR .6s steps(1) both; }
+.g1 { fill: #00FFEA; opacity: .8; animation: g1 3s .9s infinite steps(1) backwards; }
+.g2 { fill: #FF2A6D; opacity: .8; animation: g2 3s .9s infinite steps(1) backwards; }
+.flicker { animation: flicker 6s 1s infinite; }
+@keyframes in { from { opacity: 0; transform: translateX(-14px); filter: drop-shadow(0 0 6px #00FFEA); } to { opacity: 1; transform: none; filter: none; } }
+@keyframes pop { 0% { opacity: 0; transform: scale(.6); } 60% { opacity: 1; transform: scale(1.1); } 100% { opacity: 1; transform: scale(1); } }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes bar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .35; transform: scale(1.5); } }
+@keyframes ginL { 0% { opacity: 0; } 15% { opacity: 1; transform: translateX(-30px); } 35% { transform: translateX(12px); } 55% { transform: translateX(-5px); } 100% { opacity: 1; transform: none; } }
+@keyframes ginR { 0% { opacity: 0; } 15% { opacity: 1; transform: translateX(30px); } 35% { transform: translateX(-12px); } 55% { transform: translateX(5px); } 100% { opacity: 1; transform: none; } }
 @keyframes g1 { 0%, 100% { transform: translate(-2px, 0); } 92% { transform: translate(-7px, 2px); } 95% { transform: translate(5px, -2px); } }
 @keyframes g2 { 0%, 100% { transform: translate(2px, 0); } 92% { transform: translate(7px, -2px); } 95% { transform: translate(-5px, 2px); } }
 @keyframes flicker { 0%, 96%, 100% { opacity: 1; } 97% { opacity: .6; } 98% { opacity: 1; } 99% { opacity: .75; } }
 </style>
 <rect x=".5" y=".5" width="799" height="${H - 1}" rx="10" fill="#050505" stroke="#00FFEA" stroke-opacity=".6"/>
-<g class="flicker" visibility="hidden">${show(LOGIN_END)}
+<g class="flicker">
 <use href="#banner" xlink:href="#banner" class="g1"/>
 <use href="#banner" xlink:href="#banner" class="g2"/>
 <use href="#banner" xlink:href="#banner" fill="#E6E6E6"/>
 </g>
-${out.replace("BAR_Y", H - 24)}<rect width="800" height="${H}" rx="10" fill="url(#scan)" pointer-events="none"/>
+${out}<rect width="800" height="${H}" rx="10" fill="url(#scan)" pointer-events="none"/>
 </svg>
 `);
 console.log(`dedsec.svg: ${H}px tall, runs ${t.toFixed(1)}s`);
