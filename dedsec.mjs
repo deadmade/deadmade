@@ -65,7 +65,26 @@ function bat(at, file, rows) {
   y = bottom + 24;
 }
 
+// --- tuigreet-style login, removed from the display once the session starts ---
+out += `<g>\n<text x="400" y="60" class="dim" text-anchor="middle">Sun, 04 Oct 2026 · 23:42</text>
+<rect x="160" y="250" width="480" height="190" rx="4" fill="none" stroke="#00FFEA" stroke-opacity=".7"/>
+<rect x="180" y="240" width="90" height="20" fill="#050505"/><text x="225" y="255" class="c" text-anchor="middle">deadPc</text>
+<text x="400" y="294" text-anchor="middle">Welcome back, operator.</text>
+<text x="190" y="340" class="dim">Username:</text><text x="190" y="372" class="dim">Password:</text>
+<text x="400" y="700" text-anchor="middle"><tspan class="c" font-weight="bold">F2</tspan><tspan class="dim"> Change command   </tspan><tspan class="c" font-weight="bold">F3</tspan><tspan class="dim"> Choose session   </tspan><tspan class="c" font-weight="bold">F12</tspan><tspan class="dim"> Power</tspan></text>\n`;
+y = 340;
+t = 1;
+let typed = type('deadmade', 289, '', SPEED, 0.3, (end) => end + 0.3) + 0.3;
+y = 372;
+t = typed;
+typed = type('********', 289, '', 0.1, typed, (end) => end + 0.5) + 0.5;
+out += `<text x="400" y="414" class="dim" text-anchor="middle" visibility="hidden">${show(typed)}Starting session: zsh</text>
+<set attributeName="display" to="none" begin="${s(typed + 1)}" fill="freeze"/>\n</g>\n`;
+const LOGIN_END = typed + 1;
+
 // --- session ---
+y = 172;
+t = LOGIN_END + 0.3;
 t = type('> ACCESS GRANTED. WELCOME TO DEDSEC', 40, 'c', 0.06, t, (end) => end + 0.6) + 0.6;
 y += 38;
 
@@ -124,7 +143,7 @@ text { font-family: 'Fira Code', 'JetBrains Mono', 'DejaVu Sans Mono', Consolas,
 @keyframes flicker { 0%, 96%, 100% { opacity: 1; } 97% { opacity: .6; } 98% { opacity: 1; } 99% { opacity: .75; } }
 </style>
 <rect x=".5" y=".5" width="799" height="${H - 1}" rx="10" fill="#050505" stroke="#00FFEA" stroke-opacity=".6"/>
-<g class="flicker">
+<g class="flicker" visibility="hidden">${show(LOGIN_END)}
 <use href="#banner" xlink:href="#banner" class="g1"/>
 <use href="#banner" xlink:href="#banner" class="g2"/>
 <use href="#banner" xlink:href="#banner" fill="#E6E6E6"/>
