@@ -118,16 +118,38 @@ for (const name of ['.NET', 'Blazor', 'C#', 'Git', 'GitHub', 'LaTeX', 'Markdown'
 }
 y += 38;
 
-t += 0.6;
-// ONLINE for a few seconds, then it glitches over to OFFLINE for good
-const off = t + 4;
-const hideAt = `<set attributeName="visibility" to="hidden" begin="${s(off)}" fill="freeze"/>`;
-out += `<g class="in" ${delay(t)}>${hideAt}<circle class="pulse" cx="46" cy="${y - 5}" r="5"/>
-<text x="60" y="${y}"><tspan class="c" font-weight="bold">SYSTEM ONLINE</tspan>  <tspan class="dim">deadPc · nixos · uptime ∞</tspan></text></g>
-<g class="ginL" ${delay(off)}><circle cx="46" cy="${y - 5}" r="5" fill="#FF2A6D"/>
+// --- glitch burst over the whole screen: RGB split, torn slices, blackout flicker ---
+const B = t + 0.8;
+const D = 1.5;
+const jitter = (n, max) => Array.from({ length: n }, () => Math.round((rand() * 2 - 1) * max)).join(';');
+const rgbOn = [[0, 0.5], [0.65, 1.1], [1.2, D]]
+  .map(([a, b]) => `<set attributeName="filter" to="url(#rgb)" begin="${s(B + a)}" end="${s(B + b)}"/>`).join('');
+let burst = '';
+for (let i = 0; i < 4; i++) {
+  const by = Math.round(20 + rand() * (y - 80));
+  const bh = Math.round(14 + rand() * 26);
+  const a = rand() * (D - 0.4);
+  burst += `<g ${during(B + a, B + a + 0.25 + rand() * 0.3)}>
+<clipPath id="tear${i}"><rect x="0" y="${by}" width="800" height="${bh}"/></clipPath>
+<rect x="0" y="${by}" width="800" height="${bh}" fill="#050505"/>
+<use href="#screen" xlink:href="#screen" clip-path="url(#tear${i})"><animateTransform attributeName="transform" type="translate" calcMode="discrete" values="${jitter(5, 40)}" begin="${s(B + a)}" dur=".4s" repeatCount="indefinite"/></use>
+</g>\n`;
+}
+burst += `<rect width="800" height="H_PLACEHOLDER" fill="#050505" opacity="0"><animate attributeName="opacity" calcMode="discrete" values="0;1;0;0;.8;0;0;1;0" begin="${s(B)}" dur="${s(D)}" fill="freeze"/></rect>\n`;
+const rgbFilter = `<filter id="rgb" x="-10%" y="0" width="120%" height="100%">
+<feColorMatrix in="SourceGraphic" type="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" result="r"/>
+<feOffset in="r" dx="4" result="ro"><animate attributeName="dx" calcMode="discrete" values="${jitter(6, 9)}" begin="${s(B)}" dur="${s(D)}"/></feOffset>
+<feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0" result="gb"/>
+<feOffset in="gb" dx="-4" result="gbo"><animate attributeName="dx" calcMode="discrete" values="${jitter(6, 9)}" begin="${s(B)}" dur="${s(D)}"/></feOffset>
+<feBlend in="ro" in2="gbo" mode="screen"/>
+</filter>`;
+
+// --- offline ---
+t = B + D;
+out += `<g class="slam" ${delay(t)}><circle cx="46" cy="${y - 5}" r="5" fill="#FF2A6D"/>
 <text x="60" y="${y}"><tspan class="m" font-weight="bold">SYSTEM OFFLINE</tspan>  <tspan class="dim">deadPc · connection lost</tspan></text></g>\n`;
 y += 30;
-t = off + 1;
+t += 0.6;
 out += `<g class="ginR" ${delay(t)}><text x="40" y="${y}" class="m" textLength="${24 * CW}">// CONNECTION TERMINATED</text>
 <rect class="blink" x="${40 + 25 * CW}" y="${y - 13}" width="9" height="16" fill="#FF2A6D"/></g>\n`;
 y += 22;
@@ -150,6 +172,7 @@ writeFileSync(new URL('./dedsec.svg', import.meta.url), `<svg xmlns="http://www.
 <g id="banner" xml:space="preserve">
 ${banner}
 </g>
+${rgbFilter}
 </defs>
 <style>
 text { font-family: 'Fira Code', 'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace; fill: #E6E6E6; font-size: 15px; white-space: pre; }
@@ -163,7 +186,7 @@ text { font-family: 'Fira Code', 'JetBrains Mono', 'DejaVu Sans Mono', Consolas,
 .spin { fill: none; stroke: #00FFEA; stroke-width: 2; stroke-dasharray: 20 12; transform-box: fill-box; transform-origin: center; animation: spin .6s linear infinite; }
 .track { fill: none; stroke: #333; }
 .bar { fill: #00FFEA; transform-box: fill-box; transform-origin: left; animation: bar 1s linear both; }
-.pulse { fill: #00FFEA; transform-box: fill-box; transform-origin: center; animation: pulse 1.6s ease-in-out infinite; }
+.slam { opacity: 0; transform-box: fill-box; transform-origin: left center; animation: slam .45s cubic-bezier(.2, 1.6, .4, 1) both; }
 .ginL { animation: ginL .6s steps(1) both; }
 .ginR { animation: ginR .6s steps(1) both; }
 .g1 { fill: #00FFEA; opacity: .8; animation: g1 3s ${s(L + 0.9)} infinite steps(1) backwards; }
@@ -176,7 +199,7 @@ text { font-family: 'Fira Code', 'JetBrains Mono', 'DejaVu Sans Mono', Consolas,
 @keyframes pop { 0% { opacity: 0; transform: scale(.6); } 60% { opacity: 1; transform: scale(1.1); } 100% { opacity: 1; transform: scale(1); } }
 @keyframes spin { to { transform: rotate(360deg); } }
 @keyframes bar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
-@keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .35; transform: scale(1.5); } }
+@keyframes slam { 0% { opacity: 0; transform: scale(1.6); filter: drop-shadow(0 0 10px #FF2A6D); } 60% { opacity: 1; transform: scale(.97) translateX(3px); } 100% { opacity: 1; transform: none; filter: none; } }
 @keyframes ginL { 0% { opacity: 0; } 15% { opacity: 1; transform: translateX(-30px); } 35% { transform: translateX(12px); } 55% { transform: translateX(-5px); } 100% { opacity: 1; transform: none; } }
 @keyframes ginR { 0% { opacity: 0; } 15% { opacity: 1; transform: translateX(30px); } 35% { transform: translateX(-12px); } 55% { transform: translateX(5px); } 100% { opacity: 1; transform: none; } }
 @keyframes g1 { 0%, 100% { transform: translate(-2px, 0); } 92% { transform: translate(-7px, 2px); } 95% { transform: translate(5px, -2px); } }
@@ -184,12 +207,14 @@ text { font-family: 'Fira Code', 'JetBrains Mono', 'DejaVu Sans Mono', Consolas,
 @keyframes flicker { 0%, 96%, 100% { opacity: 1; } 97% { opacity: .6; } 98% { opacity: 1; } 99% { opacity: .75; } }
 </style>
 <rect x=".5" y=".5" width="799" height="${H - 1}" rx="10" fill="#050505" stroke="#00FFEA" stroke-opacity=".6"/>
+<g id="screen">${rgbOn}
 <g class="flicker">
 <use href="#banner" xlink:href="#banner" class="g1"/>
 <use href="#banner" xlink:href="#banner" class="g2"/>
 <use href="#banner" xlink:href="#banner" fill="#E6E6E6"/>
 </g>
-${out.replace("BAR_Y", H - 24)}<rect width="800" height="${H}" rx="10" fill="url(#scan)" pointer-events="none"/>
+${out.replace("BAR_Y", H - 24)}</g>
+${burst.replace('H_PLACEHOLDER', H)}<rect width="800" height="${H}" rx="10" fill="url(#scan)" pointer-events="none"/>
 </svg>
 `);
 console.log(`dedsec.svg: ${H}px tall, runs ${t.toFixed(1)}s`);
