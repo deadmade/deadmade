@@ -59,17 +59,17 @@ text { font-family: 'Fira Code', 'JetBrains Mono', 'DejaVu Sans Mono', Consolas,
 <use href="#banner" xlink:href="#banner" fill="#E6E6E6"/>
 </g>
 <g>
-<text x="400" y="60" class="dim" text-anchor="middle">Sun, 04 Oct 2026 · 23:42</text>
+<text x="400" y="60" class="dim" text-anchor="middle">deadPc · tty1</text>
 <rect x="160" y="250" width="480" height="190" rx="4" fill="none" stroke="#00FFEA" stroke-opacity=".7"/>
 <rect x="180" y="240" width="90" height="20" fill="#050505"/><text x="225" y="255" class="c" text-anchor="middle">deadPc</text>
 <text x="400" y="294" text-anchor="middle">Welcome back, operator.</text>
 <text x="190" y="340" class="dim">Username:</text><text x="190" y="372" class="dim">Password:</text>
 <text x="400" y="598" text-anchor="middle"><tspan class="c" font-weight="bold">F2</tspan><tspan class="dim"> Change command   </tspan><tspan class="c" font-weight="bold">F3</tspan><tspan class="dim"> Choose session   </tspan><tspan class="c" font-weight="bold">F12</tspan><tspan class="dim"> Power</tspan></text>
-<clipPath id="k813"><rect x="289" y="323" height="22" width="0"><animate attributeName="width" calcMode="discrete" values="0;9;18;27;36;45;54;63;72" keyTimes="0;0.0681;0.2198;0.3141;0.4014;0.5357;0.6521;0.7501;0.8865" begin="1s" dur="1.32s" fill="freeze"/></rect></clipPath>
-<text x="289" y="340" textLength="72" clip-path="url(#k813)">deadmade</text>
+<clipPath id="k802"><rect x="289" y="323" height="22" width="0"><animate attributeName="width" calcMode="discrete" values="0;9;18;27;36;45;54;63;72" keyTimes="0;0.0681;0.2198;0.3141;0.4014;0.5357;0.6521;0.7501;0.8865" begin="1s" dur="1.32s" fill="freeze"/></rect></clipPath>
+<text x="289" y="340" textLength="72" clip-path="url(#k802)">deadmade</text>
 <rect class="cur" x="289" y="327" width="9" height="16" visibility="hidden"><set attributeName="visibility" to="visible" begin="0.3s" end="2.62s"/><animateTransform attributeName="transform" type="translate" calcMode="discrete" values="0;9;18;27;36;45;54;63;72" keyTimes="0;0.0681;0.2198;0.3141;0.4014;0.5357;0.6521;0.7501;0.8865" begin="1s" dur="1.32s" fill="freeze"/></rect>
-<clipPath id="k1542"><rect x="289" y="355" height="22" width="0"><animate attributeName="width" calcMode="discrete" values="0;9;18;27;36;45;54;63;72" keyTimes="0;0.1253;0.233;0.3524;0.4678;0.5983;0.6809;0.7745;0.8959" begin="2.62s" dur="0.96s" fill="freeze"/></rect></clipPath>
-<text x="289" y="372" textLength="72" clip-path="url(#k1542)">********</text>
+<clipPath id="k1531"><rect x="289" y="355" height="22" width="0"><animate attributeName="width" calcMode="discrete" values="0;9;18;27;36;45;54;63;72" keyTimes="0;0.1253;0.233;0.3524;0.4678;0.5983;0.6809;0.7745;0.8959" begin="2.62s" dur="0.96s" fill="freeze"/></rect></clipPath>
+<text x="289" y="372" textLength="72" clip-path="url(#k1531)">********</text>
 <rect class="cur" x="289" y="359" width="9" height="16" visibility="hidden"><set attributeName="visibility" to="visible" begin="2.62s" end="3.88s"/><animateTransform attributeName="transform" type="translate" calcMode="discrete" values="0;9;18;27;36;45;54;63;72" keyTimes="0;0.1253;0.233;0.3524;0.4678;0.5983;0.6809;0.7745;0.8959" begin="2.62s" dur="0.96s" fill="freeze"/></rect>
 <text x="400" y="414" class="in dim" text-anchor="middle" style="animation-delay:4.08s">Starting session: zsh</text>
 <set attributeName="display" to="none" begin="5.08s" fill="freeze"/>

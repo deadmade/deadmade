@@ -70,7 +70,7 @@ function checks(t, items) {
 }
 
 // --- tuigreet-style login, removed from the display once the session starts ---
-out += `<g>\n<text x="400" y="60" class="dim" text-anchor="middle">Sun, 04 Oct 2026 · 23:42</text>
+out += `<g>\n<text x="400" y="60" class="dim" text-anchor="middle">deadPc · tty1</text>
 <rect x="160" y="250" width="480" height="190" rx="4" fill="none" stroke="#00FFEA" stroke-opacity=".7"/>
 <rect x="180" y="240" width="90" height="20" fill="#050505"/><text x="225" y="255" class="c" text-anchor="middle">deadPc</text>
 <text x="400" y="294" text-anchor="middle">Welcome back, operator.</text>
