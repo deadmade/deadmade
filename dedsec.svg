@@ -1,22 +1,24 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="800" height="594" viewBox="0 0 800 594" role="img" aria-labelledby="t">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="800" height="576" viewBox="0 0 800 576" role="img" aria-labelledby="t">
   <title id="t">deadmade // DedSec terminal profile</title>
   <defs>
     <pattern id="scan" width="4" height="4" patternUnits="userSpaceOnUse">
       <rect width="4" height="1" fill="#00FFEA" opacity=".05"/>
     </pattern>
-    <clipPath id="type">
-      <rect x="40" y="180" height="30" width="0">
-        <animate attributeName="width" from="0" to="420" begin=".4s" dur="2s" fill="freeze"/>
-      </rect>
-    </clipPath>
+    <!-- typing clips: the rect grows over the typed text. Char width assumes 15px monospace ≈ 9px -->
+    <clipPath id="k0"><rect x="40" y="155" height="22" width="0"><animate attributeName="width" to="340" begin=".3s" dur="1.4s" fill="freeze"/></rect></clipPath>
+    <clipPath id="k1"><rect x="211" y="193" height="22" width="0"><animate attributeName="width" to="64" begin="2.2s" dur=".36s" fill="freeze"/></rect></clipPath>
+    <clipPath id="k2"><rect x="211" y="247" height="22" width="0"><animate attributeName="width" to="136" begin="3.5s" dur=".84s" fill="freeze"/></rect></clipPath>
+    <clipPath id="k3"><rect x="211" y="345" height="22" width="0"><animate attributeName="width" to="118" begin="5.5s" dur=".72s" fill="freeze"/></rect></clipPath>
+    <clipPath id="k4"><rect x="211" y="423" height="22" width="0"><animate attributeName="width" to="163" begin="7.2s" dur="1.02s" fill="freeze"/></rect></clipPath>
+    <clipPath id="k5"><rect x="211" y="507" height="22" width="0"><animate attributeName="width" to="46" begin="9.1s" dur=".24s" fill="freeze"/></rect></clipPath>
     <!-- ANSI Shadow banner; textLength keeps all rows the same width whatever monospace font the viewer has -->
     <g id="banner" xml:space="preserve">
-      <text class="b" x="78" y="62" textLength="644" lengthAdjust="spacingAndGlyphs">██████╗ ███████╗ █████╗ ██████╗ ███╗   ███╗ █████╗ ██████╗ ███████╗</text>
-      <text class="b" x="78" y="79" textLength="644" lengthAdjust="spacingAndGlyphs">██╔══██╗██╔════╝██╔══██╗██╔══██╗████╗ ████║██╔══██╗██╔══██╗██╔════╝</text>
-      <text class="b" x="78" y="96" textLength="644" lengthAdjust="spacingAndGlyphs">██║  ██║█████╗  ███████║██║  ██║██╔████╔██║███████║██║  ██║█████╗  </text>
-      <text class="b" x="78" y="113" textLength="644" lengthAdjust="spacingAndGlyphs">██║  ██║██╔══╝  ██╔══██║██║  ██║██║╚██╔╝██║██╔══██║██║  ██║██╔══╝  </text>
-      <text class="b" x="78" y="130" textLength="644" lengthAdjust="spacingAndGlyphs">██████╔╝███████╗██║  ██║██████╔╝██║ ╚═╝ ██║██║  ██║██████╔╝███████╗</text>
-      <text class="b" x="78" y="147" textLength="644" lengthAdjust="spacingAndGlyphs">╚═════╝ ╚══════╝╚═╝  ╚═╝╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═╝╚═════╝ ╚══════╝</text>
+      <text class="b" x="78" y="44" textLength="644" lengthAdjust="spacingAndGlyphs">██████╗ ███████╗ █████╗ ██████╗ ███╗   ███╗ █████╗ ██████╗ ███████╗</text>
+      <text class="b" x="78" y="61" textLength="644" lengthAdjust="spacingAndGlyphs">██╔══██╗██╔════╝██╔══██╗██╔══██╗████╗ ████║██╔══██╗██╔══██╗██╔════╝</text>
+      <text class="b" x="78" y="78" textLength="644" lengthAdjust="spacingAndGlyphs">██║  ██║█████╗  ███████║██║  ██║██╔████╔██║███████║██║  ██║█████╗  </text>
+      <text class="b" x="78" y="95" textLength="644" lengthAdjust="spacingAndGlyphs">██║  ██║██╔══╝  ██╔══██║██║  ██║██║╚██╔╝██║██╔══██║██║  ██║██╔══╝  </text>
+      <text class="b" x="78" y="112" textLength="644" lengthAdjust="spacingAndGlyphs">██████╔╝███████╗██║  ██║██████╔╝██║ ╚═╝ ██║██║  ██║██████╔╝███████╗</text>
+      <text class="b" x="78" y="129" textLength="644" lengthAdjust="spacingAndGlyphs">╚═════╝ ╚══════╝╚═╝  ╚═╝╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═╝╚═════╝ ╚══════╝</text>
     </g>
   </defs>
   <style>
@@ -25,30 +27,20 @@
     .c { fill: #00FFEA; }
     .m { fill: #FF2A6D; }
     .dim { fill: #6B6B6B; }
-    .h { fill: #00FFEA; font-weight: bold; font-size: 16px; }
+    .cur { fill: #00FFEA; }
     .g1 { fill: #00FFEA; opacity: .8; animation: g1 3s infinite steps(1); }
     .g2 { fill: #FF2A6D; opacity: .8; animation: g2 3s infinite steps(1); }
     .tag rect { fill: #000; stroke: #00FFEA; stroke-width: 1; }
     .tag text { fill: #00FFEA; font-size: 13px; text-anchor: middle; }
-    .l { opacity: 0; animation: show .25s forwards; }
     .blink { animation: blink 1s infinite steps(1); }
     .flicker { animation: flicker 6s infinite; }
-    @keyframes show { to { opacity: 1; } }
     @keyframes blink { 50% { opacity: 0; } }
     @keyframes g1 { 0%, 100% { transform: translate(-2px, 0); } 92% { transform: translate(-7px, 2px); } 95% { transform: translate(5px, -2px); } }
     @keyframes g2 { 0%, 100% { transform: translate(2px, 0); } 92% { transform: translate(7px, -2px); } 95% { transform: translate(-5px, 2px); } }
     @keyframes flicker { 0%, 96%, 100% { opacity: 1; } 97% { opacity: .6; } 98% { opacity: 1; } 99% { opacity: .75; } }
   </style>
 
-  <rect x=".5" y=".5" width="799" height="593" rx="10" fill="#050505" stroke="#00FFEA" stroke-opacity=".6"/>
-
-  <!-- window bar -->
-  <rect x=".5" y=".5" width="799" height="34" rx="10" fill="#111"/>
-  <rect x=".5" y="24" width="799" height="11" fill="#111"/>
-  <circle cx="22" cy="18" r="6" fill="#FF2A6D"/>
-  <circle cx="42" cy="18" r="6" fill="#F5D300"/>
-  <circle cx="62" cy="18" r="6" fill="#00FFEA"/>
-  <text x="400" y="23" text-anchor="middle" class="dim" font-size="13">deadmade@dedsec: ~</text>
+  <rect x=".5" y=".5" width="799" height="575" rx="10" fill="#050505" stroke="#00FFEA" stroke-opacity=".6"/>
 
   <!-- glitch banner -->
   <g class="flicker">
@@ -57,44 +49,56 @@
     <use href="#banner" xlink:href="#banner" fill="#E6E6E6"/>
   </g>
 
-  <!-- typing line -->
-  <text x="40" y="202" class="c" font-size="18" clip-path="url(#type)">&gt; ACCESS GRANTED. WELCOME TO DEDSEC</text>
-  <rect x="40" y="188" width="10" height="18" class="blink" fill="#00FFEA">
-    <animate attributeName="x" from="40" to="434" begin=".4s" dur="2s" fill="freeze"/>
-  </rect>
+  <!-- boot line -->
+  <text x="40" y="172" class="c" clip-path="url(#k0)">&gt; ACCESS GRANTED. WELCOME TO DEDSEC</text>
+  <rect class="cur" x="40" y="159" width="9" height="16" visibility="hidden"><set attributeName="visibility" to="visible" begin=".3s" end="1.9s"/><animate attributeName="x" to="355" begin=".3s" dur="1.4s" fill="freeze"/></rect>
 
-  <!-- terminal -->
-  <text x="40" y="240" class="l" style="animation-delay:2.6s"><tspan class="m">deadmade@dedsec</tspan><tspan class="dim">:~$</tspan> whoami</text>
-  <text x="40" y="262" class="l" style="animation-delay:2.9s"><tspan class="c">&gt;</tspan> deadmade // developer · tinkerer · cake enthusiast</text>
-  <text x="40" y="294" class="l" style="animation-delay:3.2s"><tspan class="m">deadmade@dedsec</tspan><tspan class="dim">:~$</tspan> cat status.log</text>
-  <text x="40" y="316" class="l" style="animation-delay:3.5s"><tspan class="c">[ OK ]</tspan> studies <tspan class="dim">............</tspan> COMPLETED</text>
-  <text x="40" y="338" class="l" style="animation-delay:3.7s"><tspan class="c">[ OK ]</tspan> currently <tspan class="dim">..........</tspan> building &amp; breaking things</text>
-  <text x="40" y="360" class="l" style="animation-delay:3.9s"><tspan class="m">[ !! ]</tspan> fun_fact <tspan class="dim">...........</tspan> cakes make everything better</text>
+  <!-- $ whoami -->
+  <text x="40" y="210" visibility="hidden"><set attributeName="visibility" to="visible" begin="1.9s" fill="freeze"/><tspan class="m">deadmade@dedsec</tspan><tspan class="dim">:~$</tspan></text>
+  <text x="211" y="210" clip-path="url(#k1)">whoami</text>
+  <rect class="cur" x="211" y="197" width="9" height="16" visibility="hidden"><set attributeName="visibility" to="visible" begin="1.9s" end="2.8s"/><animate attributeName="x" to="265" begin="2.2s" dur=".36s" fill="freeze"/></rect>
+  <text x="40" y="232" visibility="hidden"><set attributeName="visibility" to="visible" begin="2.8s" fill="freeze"/>deadmade // developer · tinkerer · cake enthusiast</text>
 
-  <!-- arsenal -->
-  <g class="l" style="animation-delay:4.3s">
-    <text x="40" y="400" class="h">// ARSENAL</text>
-    <g class="tag">
-      <rect x="40" y="414" width="44" height="26"/><text x="62" y="432">C#</text>
-      <rect x="94" y="414" width="60" height="26"/><text x="124" y="432">.NET</text>
-      <rect x="164" y="414" width="76" height="26"/><text x="202" y="432">Blazor</text>
-      <rect x="250" y="414" width="76" height="26"/><text x="288" y="432">Python</text>
-      <rect x="336" y="414" width="68" height="26"/><text x="370" y="432">LaTeX</text>
-      <rect x="414" y="414" width="92" height="26"/><text x="460" y="432">Markdown</text>
-      <rect x="516" y="414" width="52" height="26"/><text x="542" y="432">Git</text>
-      <rect x="578" y="414" width="76" height="26"/><text x="616" y="432">GitHub</text>
-    </g>
+  <!-- $ cat status.log -->
+  <text x="40" y="264" visibility="hidden"><set attributeName="visibility" to="visible" begin="3.2s" fill="freeze"/><tspan class="m">deadmade@dedsec</tspan><tspan class="dim">:~$</tspan></text>
+  <text x="211" y="264" clip-path="url(#k2)">cat status.log</text>
+  <rect class="cur" x="211" y="251" width="9" height="16" visibility="hidden"><set attributeName="visibility" to="visible" begin="3.2s" end="4.5s"/><animate attributeName="x" to="337" begin="3.5s" dur=".84s" fill="freeze"/></rect>
+  <text x="40" y="286" visibility="hidden"><set attributeName="visibility" to="visible" begin="4.5s" fill="freeze"/><tspan class="c">[ OK ]</tspan> studies <tspan class="dim">............</tspan> COMPLETED</text>
+  <text x="40" y="308" visibility="hidden"><set attributeName="visibility" to="visible" begin="4.65s" fill="freeze"/><tspan class="c">[ OK ]</tspan> currently <tspan class="dim">..........</tspan> building &amp; breaking things</text>
+  <text x="40" y="330" visibility="hidden"><set attributeName="visibility" to="visible" begin="4.8s" fill="freeze"/><tspan class="m">[ !! ]</tspan> fun_fact <tspan class="dim">...........</tspan> cakes make everything better</text>
+
+  <!-- $ ls ./arsenal -->
+  <text x="40" y="362" visibility="hidden"><set attributeName="visibility" to="visible" begin="5.2s" fill="freeze"/><tspan class="m">deadmade@dedsec</tspan><tspan class="dim">:~$</tspan></text>
+  <text x="211" y="362" clip-path="url(#k3)">ls ./arsenal</text>
+  <rect class="cur" x="211" y="349" width="9" height="16" visibility="hidden"><set attributeName="visibility" to="visible" begin="5.2s" end="6.4s"/><animate attributeName="x" to="319" begin="5.5s" dur=".72s" fill="freeze"/></rect>
+  <g class="tag">
+    <g visibility="hidden"><set attributeName="visibility" to="visible" begin="6.4s" fill="freeze"/><rect x="40" y="374" width="44" height="26"/><text x="62" y="392">C#</text></g>
+    <g visibility="hidden"><set attributeName="visibility" to="visible" begin="6.46s" fill="freeze"/><rect x="94" y="374" width="60" height="26"/><text x="124" y="392">.NET</text></g>
+    <g visibility="hidden"><set attributeName="visibility" to="visible" begin="6.52s" fill="freeze"/><rect x="164" y="374" width="76" height="26"/><text x="202" y="392">Blazor</text></g>
+    <g visibility="hidden"><set attributeName="visibility" to="visible" begin="6.58s" fill="freeze"/><rect x="250" y="374" width="76" height="26"/><text x="288" y="392">Python</text></g>
+    <g visibility="hidden"><set attributeName="visibility" to="visible" begin="6.64s" fill="freeze"/><rect x="336" y="374" width="68" height="26"/><text x="370" y="392">LaTeX</text></g>
+    <g visibility="hidden"><set attributeName="visibility" to="visible" begin="6.7s" fill="freeze"/><rect x="414" y="374" width="92" height="26"/><text x="460" y="392">Markdown</text></g>
+    <g visibility="hidden"><set attributeName="visibility" to="visible" begin="6.76s" fill="freeze"/><rect x="516" y="374" width="52" height="26"/><text x="542" y="392">Git</text></g>
+    <g visibility="hidden"><set attributeName="visibility" to="visible" begin="6.82s" fill="freeze"/><rect x="578" y="374" width="76" height="26"/><text x="616" y="392">GitHub</text></g>
   </g>
 
-  <!-- manifesto -->
-  <g class="l" style="animation-delay:4.8s">
-    <text x="40" y="480" class="h">// MANIFESTO</text>
-    <rect x="40" y="492" width="3" height="42" fill="#FF2A6D"/>
-    <text x="54" y="508" font-style="italic">We are deadmade. We write code. We break it. We fix it.</text>
-    <text x="54" y="530" font-style="italic" class="dim">// Information wants to be free.</text>
+  <!-- $ cat manifesto.txt -->
+  <text x="40" y="440" visibility="hidden"><set attributeName="visibility" to="visible" begin="6.9s" fill="freeze"/><tspan class="m">deadmade@dedsec</tspan><tspan class="dim">:~$</tspan></text>
+  <text x="211" y="440" clip-path="url(#k4)">cat manifesto.txt</text>
+  <rect class="cur" x="211" y="427" width="9" height="16" visibility="hidden"><set attributeName="visibility" to="visible" begin="6.9s" end="8.4s"/><animate attributeName="x" to="364" begin="7.2s" dur="1.02s" fill="freeze"/></rect>
+  <g visibility="hidden">
+    <set attributeName="visibility" to="visible" begin="8.4s" fill="freeze"/>
+    <rect x="40" y="450" width="3" height="42" fill="#FF2A6D"/>
+    <text x="54" y="466" font-style="italic">We are deadmade. We write code. We break it. We fix it.</text>
+    <text x="54" y="488" font-style="italic" class="dim">// Information wants to be free.</text>
   </g>
 
-  <text x="40" y="570" class="c l" style="animation-delay:5.3s">// CONNECTION TERMINATED<tspan class="blink">_</tspan></text>
+  <!-- $ exit -->
+  <text x="40" y="524" visibility="hidden"><set attributeName="visibility" to="visible" begin="8.8s" fill="freeze"/><tspan class="m">deadmade@dedsec</tspan><tspan class="dim">:~$</tspan></text>
+  <text x="211" y="524" clip-path="url(#k5)">exit</text>
+  <rect class="cur" x="211" y="511" width="9" height="16" visibility="hidden"><set attributeName="visibility" to="visible" begin="8.8s" end="9.6s"/><animate attributeName="x" to="247" begin="9.1s" dur=".24s" fill="freeze"/></rect>
+  <text x="40" y="546" class="c" visibility="hidden"><set attributeName="visibility" to="visible" begin="9.6s" fill="freeze"/>// CONNECTION TERMINATED</text>
+  <rect class="cur blink" x="265" y="533" width="9" height="16" visibility="hidden"><set attributeName="visibility" to="visible" begin="9.6s" fill="freeze"/></rect>
 
-  <rect width="800" height="594" rx="10" fill="url(#scan)" pointer-events="none"/>
+  <rect width="800" height="576" rx="10" fill="url(#scan)" pointer-events="none"/>
 </svg>
