@@ -50,11 +50,24 @@ function lines(at, ...rows) {
   out += '</g>\n';
 }
 
+const TAGS = { OK: ['[  OK  ]', 'c'], WARN: ['[ WARN ]', 'y'], FAILED: ['[FAILED]', 'm'] };
+
+// systemd-style startup lines printed in quick succession. Returns when the last one is shown.
+function startup(at, items) {
+  for (const [status, msg] of items) {
+    const [tag, cls] = TAGS[status];
+    out += `<text x="40" y="${y}" visibility="hidden">${show(at)}<tspan class="${cls}">${tag}</tspan> ${msg}</text>\n`;
+    at += 0.2 + 0.3 * rand();
+    y += 22;
+  }
+  return at;
+}
+
 // "Checking <name> ....." lines, each resolving to a status after a pause. Returns when the last one resolves.
 function checks(at, items) {
   for (const [name, status, note] of items) {
     const label = `Checking ${name} `.padEnd(32, '.');
-    const [tag, cls] = { OK: ['[  OK  ]', 'c'], WARN: ['[ WARN ]', 'y'], FAILED: ['[FAILED]', 'm'] }[status];
+    const [tag, cls] = TAGS[status];
     out += `<text x="40" y="${y}" textLength="${label.length * CW}" visibility="hidden">${show(at)}${label.replace(/\.+$/, '<tspan class="dim">$&</tspan>')}</text>\n`;
     at += 0.5 + 0.6 * rand();
     out += `<text x="${40 + (label.length + 1) * CW}" y="${y}" visibility="hidden">${show(at)}<tspan class="${cls}">${tag}</tspan> ${note}</text>\n`;
@@ -85,11 +98,13 @@ const LOGIN_END = typed + 1;
 
 // --- session ---
 y = 172;
-t = LOGIN_END + 0.3;
-t = type('> ACCESS GRANTED. WELCOME TO DEDSEC', 40, 'c', 0.06, t, (end) => end + 0.6) + 0.6;
-y += 38;
-
-cmd('whoami', (at) => lines(at, 'deadmade // developer · tinkerer · cake enthusiast'));
+t = startup(LOGIN_END + 0.3, [
+  ['OK', 'Mounted /home/deadmade'],
+  ['OK', 'Started DedSec uplink'],
+  ['OK', 'Reached target ctOS bypass'],
+  ['OK', 'Logged in as <tspan class="c">deadmade</tspan> <tspan class="dim">// developer · tinkerer · cake enthusiast</tspan>'],
+]) + 0.6;
+y += 16;
 cmd('nix run .#system-status', (at) =>
   checks(at, [
     ['studies', 'OK', 'completed, finally'],
