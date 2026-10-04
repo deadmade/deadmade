@@ -126,7 +126,10 @@ out += `<g class="in" ${delay(t)}>${hideAt}<circle class="pulse" cx="46" cy="${y
 <text x="60" y="${y}"><tspan class="c" font-weight="bold">SYSTEM ONLINE</tspan>  <tspan class="dim">deadPc · nixos · uptime ∞</tspan></text></g>
 <g class="ginL" ${delay(off)}><circle cx="46" cy="${y - 5}" r="5" fill="#FF2A6D"/>
 <text x="60" y="${y}"><tspan class="m" font-weight="bold">SYSTEM OFFLINE</tspan>  <tspan class="dim">deadPc · connection lost</tspan></text></g>\n`;
-t = off;
+y += 30;
+t = off + 1;
+out += `<g class="ginR" ${delay(t)}><text x="40" y="${y}" class="m" textLength="${24 * CW}">// CONNECTION TERMINATED</text>
+<rect class="blink" x="${40 + 25 * CW}" y="${y - 13}" width="9" height="16" fill="#FF2A6D"/></g>\n`;
 y += 22;
 
 const H = y + 10;
@@ -167,6 +170,8 @@ text { font-family: 'Fira Code', 'JetBrains Mono', 'DejaVu Sans Mono', Consolas,
 .g2 { fill: #FF2A6D; opacity: .8; animation: g2 3s ${s(L + 0.9)} infinite steps(1) backwards; }
 .flicker { animation: flicker 6s ${s(L + 1)} infinite; }
 .cur { fill: #00FFEA; }
+.blink { animation: blink 1s infinite steps(1); }
+@keyframes blink { 50% { opacity: 0; } }
 @keyframes in { from { opacity: 0; transform: translateX(-14px); filter: drop-shadow(0 0 6px #00FFEA); } to { opacity: 1; transform: none; filter: none; } }
 @keyframes pop { 0% { opacity: 0; transform: scale(.6); } 60% { opacity: 1; transform: scale(1.1); } 100% { opacity: 1; transform: scale(1); } }
 @keyframes spin { to { transform: rotate(360deg); } }
