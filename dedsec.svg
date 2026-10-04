@@ -1,24 +1,33 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="800" height="590" viewBox="0 0 800 590" role="img" aria-labelledby="t">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="800" height="594" viewBox="0 0 800 594" role="img" aria-labelledby="t">
   <title id="t">deadmade // DedSec terminal profile</title>
   <defs>
     <pattern id="scan" width="4" height="4" patternUnits="userSpaceOnUse">
       <rect width="4" height="1" fill="#00FFEA" opacity=".05"/>
     </pattern>
     <clipPath id="type">
-      <rect x="40" y="140" height="30" width="0">
+      <rect x="40" y="180" height="30" width="0">
         <animate attributeName="width" from="0" to="420" begin=".4s" dur="2s" fill="freeze"/>
       </rect>
     </clipPath>
+    <!-- ANSI Shadow banner; textLength keeps all rows the same width whatever monospace font the viewer has -->
+    <g id="banner" xml:space="preserve">
+      <text class="b" x="78" y="62" textLength="644" lengthAdjust="spacingAndGlyphs">██████╗ ███████╗ █████╗ ██████╗ ███╗   ███╗ █████╗ ██████╗ ███████╗</text>
+      <text class="b" x="78" y="79" textLength="644" lengthAdjust="spacingAndGlyphs">██╔══██╗██╔════╝██╔══██╗██╔══██╗████╗ ████║██╔══██╗██╔══██╗██╔════╝</text>
+      <text class="b" x="78" y="96" textLength="644" lengthAdjust="spacingAndGlyphs">██║  ██║█████╗  ███████║██║  ██║██╔████╔██║███████║██║  ██║█████╗  </text>
+      <text class="b" x="78" y="113" textLength="644" lengthAdjust="spacingAndGlyphs">██║  ██║██╔══╝  ██╔══██║██║  ██║██║╚██╔╝██║██╔══██║██║  ██║██╔══╝  </text>
+      <text class="b" x="78" y="130" textLength="644" lengthAdjust="spacingAndGlyphs">██████╔╝███████╗██║  ██║██████╔╝██║ ╚═╝ ██║██║  ██║██████╔╝███████╗</text>
+      <text class="b" x="78" y="147" textLength="644" lengthAdjust="spacingAndGlyphs">╚═════╝ ╚══════╝╚═╝  ╚═╝╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═╝╚═════╝ ╚══════╝</text>
+    </g>
   </defs>
   <style>
     text { font-family: 'Fira Code', 'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace; fill: #E6E6E6; font-size: 15px; white-space: pre; }
+    .b { fill: inherit; font-size: 16px; }
     .c { fill: #00FFEA; }
     .m { fill: #FF2A6D; }
     .dim { fill: #6B6B6B; }
     .h { fill: #00FFEA; font-weight: bold; font-size: 16px; }
-    .title { font-size: 72px; font-weight: bold; letter-spacing: 6px; }
-    .g1 { fill: #00FFEA; animation: g1 3s infinite steps(1); }
-    .g2 { fill: #FF2A6D; animation: g2 3s infinite steps(1); }
+    .g1 { fill: #00FFEA; opacity: .8; animation: g1 3s infinite steps(1); }
+    .g2 { fill: #FF2A6D; opacity: .8; animation: g2 3s infinite steps(1); }
     .tag rect { fill: #000; stroke: #00FFEA; stroke-width: 1; }
     .tag text { fill: #00FFEA; font-size: 13px; text-anchor: middle; }
     .l { opacity: 0; animation: show .25s forwards; }
@@ -26,12 +35,12 @@
     .flicker { animation: flicker 6s infinite; }
     @keyframes show { to { opacity: 1; } }
     @keyframes blink { 50% { opacity: 0; } }
-    @keyframes g1 { 0%, 100% { transform: translate(-3px, 0); } 92% { transform: translate(-8px, 2px); } 95% { transform: translate(5px, -2px); } }
-    @keyframes g2 { 0%, 100% { transform: translate(3px, 0); } 92% { transform: translate(8px, -2px); } 95% { transform: translate(-5px, 2px); } }
+    @keyframes g1 { 0%, 100% { transform: translate(-2px, 0); } 92% { transform: translate(-7px, 2px); } 95% { transform: translate(5px, -2px); } }
+    @keyframes g2 { 0%, 100% { transform: translate(2px, 0); } 92% { transform: translate(7px, -2px); } 95% { transform: translate(-5px, 2px); } }
     @keyframes flicker { 0%, 96%, 100% { opacity: 1; } 97% { opacity: .6; } 98% { opacity: 1; } 99% { opacity: .75; } }
   </style>
 
-  <rect x=".5" y=".5" width="799" height="589" rx="10" fill="#050505" stroke="#00FFEA" stroke-opacity=".6"/>
+  <rect x=".5" y=".5" width="799" height="593" rx="10" fill="#050505" stroke="#00FFEA" stroke-opacity=".6"/>
 
   <!-- window bar -->
   <rect x=".5" y=".5" width="799" height="34" rx="10" fill="#111"/>
@@ -41,54 +50,51 @@
   <circle cx="62" cy="18" r="6" fill="#00FFEA"/>
   <text x="400" y="23" text-anchor="middle" class="dim" font-size="13">deadmade@dedsec: ~</text>
 
-  <!-- glitch title -->
+  <!-- glitch banner -->
   <g class="flicker">
-    <text x="400" y="112" text-anchor="middle" class="title g1">DEADMADE</text>
-    <text x="400" y="112" text-anchor="middle" class="title g2">DEADMADE</text>
-    <text x="400" y="112" text-anchor="middle" class="title">DEADMADE</text>
+    <use href="#banner" xlink:href="#banner" class="g1"/>
+    <use href="#banner" xlink:href="#banner" class="g2"/>
+    <use href="#banner" xlink:href="#banner" fill="#E6E6E6"/>
   </g>
 
   <!-- typing line -->
-  <text x="40" y="162" class="c" font-size="18" clip-path="url(#type)">&gt; ACCESS GRANTED. WELCOME TO DEDSEC</text>
-  <rect x="40" y="148" width="10" height="18" class="c blink" fill="#00FFEA">
+  <text x="40" y="202" class="c" font-size="18" clip-path="url(#type)">&gt; ACCESS GRANTED. WELCOME TO DEDSEC</text>
+  <rect x="40" y="188" width="10" height="18" class="blink" fill="#00FFEA">
     <animate attributeName="x" from="40" to="434" begin=".4s" dur="2s" fill="freeze"/>
   </rect>
 
   <!-- terminal -->
-  <text x="40" y="200" class="l" style="animation-delay:2.6s"><tspan class="m">deadmade@dedsec</tspan><tspan class="dim">:~$</tspan> whoami</text>
-  <text x="40" y="222" class="l" style="animation-delay:2.9s"><tspan class="c">&gt;</tspan> deadmade // developer · tinkerer · cake enthusiast</text>
-  <text x="40" y="254" class="l" style="animation-delay:3.2s"><tspan class="m">deadmade@dedsec</tspan><tspan class="dim">:~$</tspan> cat status.log</text>
-  <text x="40" y="276" class="l" style="animation-delay:3.5s"><tspan class="c">[ OK ]</tspan> studies <tspan class="dim">............</tspan> COMPLETED</text>
-  <text x="40" y="298" class="l" style="animation-delay:3.7s"><tspan class="c">[ OK ]</tspan> currently <tspan class="dim">..........</tspan> building &amp; breaking things</text>
-  <text x="40" y="320" class="l" style="animation-delay:3.9s"><tspan class="m">[ !! ]</tspan> fun_fact <tspan class="dim">...........</tspan> cakes make everything better</text>
+  <text x="40" y="240" class="l" style="animation-delay:2.6s"><tspan class="m">deadmade@dedsec</tspan><tspan class="dim">:~$</tspan> whoami</text>
+  <text x="40" y="262" class="l" style="animation-delay:2.9s"><tspan class="c">&gt;</tspan> deadmade // developer · tinkerer · cake enthusiast</text>
+  <text x="40" y="294" class="l" style="animation-delay:3.2s"><tspan class="m">deadmade@dedsec</tspan><tspan class="dim">:~$</tspan> cat status.log</text>
+  <text x="40" y="316" class="l" style="animation-delay:3.5s"><tspan class="c">[ OK ]</tspan> studies <tspan class="dim">............</tspan> COMPLETED</text>
+  <text x="40" y="338" class="l" style="animation-delay:3.7s"><tspan class="c">[ OK ]</tspan> currently <tspan class="dim">..........</tspan> building &amp; breaking things</text>
+  <text x="40" y="360" class="l" style="animation-delay:3.9s"><tspan class="m">[ !! ]</tspan> fun_fact <tspan class="dim">...........</tspan> cakes make everything better</text>
 
   <!-- arsenal -->
   <g class="l" style="animation-delay:4.3s">
-    <text x="40" y="360" class="h">// ARSENAL</text>
+    <text x="40" y="400" class="h">// ARSENAL</text>
     <g class="tag">
-      <rect x="40" y="374" width="44" height="26"/><text x="62" y="392">C#</text>
-      <rect x="94" y="374" width="36" height="26"/><text x="112" y="392">C</text>
-      <rect x="140" y="374" width="60" height="26"/><text x="170" y="392">.NET</text>
-      <rect x="210" y="374" width="76" height="26"/><text x="248" y="392">Blazor</text>
-      <rect x="296" y="374" width="76" height="26"/><text x="334" y="392">Python</text>
-      <rect x="382" y="374" width="68" height="26"/><text x="416" y="392">LaTeX</text>
-      <rect x="40" y="410" width="92" height="26"/><text x="86" y="428">Markdown</text>
-      <rect x="142" y="410" width="92" height="26"/><text x="188" y="428">Supabase</text>
-      <rect x="244" y="410" width="52" height="26"/><text x="270" y="428">Git</text>
-      <rect x="306" y="410" width="76" height="26"/><text x="344" y="428">GitHub</text>
-      <rect x="392" y="410" width="84" height="26"/><text x="434" y="428">Swagger</text>
+      <rect x="40" y="414" width="44" height="26"/><text x="62" y="432">C#</text>
+      <rect x="94" y="414" width="60" height="26"/><text x="124" y="432">.NET</text>
+      <rect x="164" y="414" width="76" height="26"/><text x="202" y="432">Blazor</text>
+      <rect x="250" y="414" width="76" height="26"/><text x="288" y="432">Python</text>
+      <rect x="336" y="414" width="68" height="26"/><text x="370" y="432">LaTeX</text>
+      <rect x="414" y="414" width="92" height="26"/><text x="460" y="432">Markdown</text>
+      <rect x="516" y="414" width="52" height="26"/><text x="542" y="432">Git</text>
+      <rect x="578" y="414" width="76" height="26"/><text x="616" y="432">GitHub</text>
     </g>
   </g>
 
   <!-- manifesto -->
   <g class="l" style="animation-delay:4.8s">
-    <text x="40" y="476" class="h">// MANIFESTO</text>
-    <rect x="40" y="488" width="3" height="42" fill="#FF2A6D"/>
-    <text x="54" y="504" font-style="italic">We are deadmade. We write code. We break it. We fix it.</text>
-    <text x="54" y="526" font-style="italic" class="dim">// Information wants to be free.</text>
+    <text x="40" y="480" class="h">// MANIFESTO</text>
+    <rect x="40" y="492" width="3" height="42" fill="#FF2A6D"/>
+    <text x="54" y="508" font-style="italic">We are deadmade. We write code. We break it. We fix it.</text>
+    <text x="54" y="530" font-style="italic" class="dim">// Information wants to be free.</text>
   </g>
 
-  <text x="40" y="566" class="c l" style="animation-delay:5.3s">// CONNECTION TERMINATED<tspan class="blink">_</tspan></text>
+  <text x="40" y="570" class="c l" style="animation-delay:5.3s">// CONNECTION TERMINATED<tspan class="blink">_</tspan></text>
 
-  <rect width="800" height="590" rx="10" fill="url(#scan)" pointer-events="none"/>
+  <rect width="800" height="594" rx="10" fill="url(#scan)" pointer-events="none"/>
 </svg>
