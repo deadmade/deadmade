@@ -13,6 +13,23 @@ const during = (t0, t1) => `visibility="hidden"><set attributeName="visibility" 
 let out = '';
 let y = 172;
 
+// Types `text` at (x, y) starting at t0, a char at a time with a cursor (shown from `from`). Returns when typing ends.
+function type(text, x, perChar, t0, from) {
+  const n = text.length;
+  const delays = Array.from({ length: n }, () => perChar * (0.6 + 0.8 * rand()));
+  const total = delays.reduce((a, b) => a + b, 0) + perChar;
+  let acc = 0;
+  const keyTimes = [0, ...delays.map((d) => +((acc += d) / total).toFixed(4))].join(';');
+  const steps = Array.from({ length: n + 1 }, (_, i) => i * CW).join(';');
+  const id = `k${out.length}`;
+  const anim = (attr, tag, extra = '') =>
+    `<${tag} attributeName="${attr}" ${extra}calcMode="discrete" values="${steps}" keyTimes="${keyTimes}" begin="${s(t0)}" dur="${s(total)}" fill="freeze"/>`;
+  out += `<clipPath id="${id}"><rect x="${x}" y="${y - 17}" height="22" width="0">${anim('width', 'animate')}</rect></clipPath>\n`;
+  out += `<text x="${x}" y="${y}" textLength="${n * CW}" clip-path="url(#${id})">${text}</text>\n`;
+  out += `<rect class="cur" x="${x}" y="${y - 13}" width="9" height="16" ${during(from, t0 + total + 0.3)}>${anim('transform', 'animateTransform', 'type="translate" ')}</rect>\n`;
+  return t0 + total;
+}
+
 const TAGS = { OK: ['[  OK  ]', 'c'], WARN: ['[ WARN ]', 'y'], FAILED: ['[FAILED]', 'm'] };
 const tag = (status) => `<tspan class="${TAGS[status][1]}">${TAGS[status][0]}</tspan>`;
 
@@ -52,8 +69,24 @@ function checks(t, items) {
   return t + 0.3;
 }
 
-// --- sequence ---
-let t = startup(1.1, [
+// --- tuigreet-style login, removed from the display once the session starts ---
+out += `<g>\n<text x="400" y="60" class="dim" text-anchor="middle">Sun, 04 Oct 2026 · 23:42</text>
+<rect x="160" y="250" width="480" height="190" rx="4" fill="none" stroke="#00FFEA" stroke-opacity=".7"/>
+<rect x="180" y="240" width="90" height="20" fill="#050505"/><text x="225" y="255" class="c" text-anchor="middle">deadPc</text>
+<text x="400" y="294" text-anchor="middle">Welcome back, operator.</text>
+<text x="190" y="340" class="dim">Username:</text><text x="190" y="372" class="dim">Password:</text>
+<text x="400" y="BAR_Y" text-anchor="middle"><tspan class="c" font-weight="bold">F2</tspan><tspan class="dim"> Change command   </tspan><tspan class="c" font-weight="bold">F3</tspan><tspan class="dim"> Choose session   </tspan><tspan class="c" font-weight="bold">F12</tspan><tspan class="dim"> Power</tspan></text>\n`;
+y = 340;
+let typed = type('deadmade', 289, 0.15, 1, 0.3) + 0.3;
+y = 372;
+typed = type('********', 289, 0.1, typed, typed) + 0.5;
+out += `<text x="400" y="414" class="in dim" text-anchor="middle" ${delay(typed)}>Starting session: zsh</text>
+<set attributeName="display" to="none" begin="${s(typed + 1)}" fill="freeze"/>\n</g>\n`;
+const L = typed + 1; // login end: everything below starts after this
+
+// --- boot log ---
+y = 172;
+let t = startup(L + 1.1, [
   ['OK', 'Mounted /home/deadmade'],
   ['OK', 'Started DedSec uplink'],
   ['OK', 'Reached target ctOS bypass'],
@@ -98,7 +131,7 @@ const banner = [
   '██║  ██║██╔══╝  ██╔══██║██║  ██║██║╚██╔╝██║██╔══██║██║  ██║██╔══╝  ',
   '██████╔╝███████╗██║  ██║██████╔╝██║ ╚═╝ ██║██║  ██║██████╔╝███████╗',
   '╚═════╝ ╚══════╝╚═╝  ╚═╝╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═╝╚═════╝ ╚══════╝',
-].map((l, i) => `<text class="b gin${i % 2 ? 'R' : 'L'}" x="78" y="${44 + i * 17}" textLength="644" lengthAdjust="spacingAndGlyphs" ${delay(0.1 + i * 0.08)}>${l}</text>`).join('\n');
+].map((l, i) => `<text class="b gin${i % 2 ? 'R' : 'L'}" x="78" y="${44 + i * 17}" textLength="644" lengthAdjust="spacingAndGlyphs" ${delay(L + 0.1 + i * 0.08)}>${l}</text>`).join('\n');
 
 writeFileSync(new URL('./dedsec.svg', import.meta.url), `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="800" height="${H}" viewBox="0 0 800 ${H}" role="img" aria-labelledby="t">
 <title id="t">deadmade // DedSec boot log on deadPc</title>
@@ -124,9 +157,10 @@ text { font-family: 'Fira Code', 'JetBrains Mono', 'DejaVu Sans Mono', Consolas,
 .pulse { fill: #00FFEA; transform-box: fill-box; transform-origin: center; animation: pulse 1.6s ease-in-out infinite; }
 .ginL { animation: ginL .6s steps(1) both; }
 .ginR { animation: ginR .6s steps(1) both; }
-.g1 { fill: #00FFEA; opacity: .8; animation: g1 3s .9s infinite steps(1) backwards; }
-.g2 { fill: #FF2A6D; opacity: .8; animation: g2 3s .9s infinite steps(1) backwards; }
-.flicker { animation: flicker 6s 1s infinite; }
+.g1 { fill: #00FFEA; opacity: .8; animation: g1 3s ${s(L + 0.9)} infinite steps(1) backwards; }
+.g2 { fill: #FF2A6D; opacity: .8; animation: g2 3s ${s(L + 0.9)} infinite steps(1) backwards; }
+.flicker { animation: flicker 6s ${s(L + 1)} infinite; }
+.cur { fill: #00FFEA; }
 @keyframes in { from { opacity: 0; transform: translateX(-14px); filter: drop-shadow(0 0 6px #00FFEA); } to { opacity: 1; transform: none; filter: none; } }
 @keyframes pop { 0% { opacity: 0; transform: scale(.6); } 60% { opacity: 1; transform: scale(1.1); } 100% { opacity: 1; transform: scale(1); } }
 @keyframes spin { to { transform: rotate(360deg); } }
@@ -144,7 +178,7 @@ text { font-family: 'Fira Code', 'JetBrains Mono', 'DejaVu Sans Mono', Consolas,
 <use href="#banner" xlink:href="#banner" class="g2"/>
 <use href="#banner" xlink:href="#banner" fill="#E6E6E6"/>
 </g>
-${out}<rect width="800" height="${H}" rx="10" fill="url(#scan)" pointer-events="none"/>
+${out.replace("BAR_Y", H - 24)}<rect width="800" height="${H}" rx="10" fill="url(#scan)" pointer-events="none"/>
 </svg>
 `);
 console.log(`dedsec.svg: ${H}px tall, runs ${t.toFixed(1)}s`);

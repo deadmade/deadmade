@@ -4,12 +4,12 @@
 <defs>
 <pattern id="scan" width="4" height="4" patternUnits="userSpaceOnUse"><rect width="4" height="1" fill="#00FFEA" opacity=".05"/></pattern>
 <g id="banner" xml:space="preserve">
-<text class="b ginL" x="78" y="44" textLength="644" lengthAdjust="spacingAndGlyphs" style="animation-delay:0.1s">██████╗ ███████╗ █████╗ ██████╗ ███╗   ███╗ █████╗ ██████╗ ███████╗</text>
-<text class="b ginR" x="78" y="61" textLength="644" lengthAdjust="spacingAndGlyphs" style="animation-delay:0.18s">██╔══██╗██╔════╝██╔══██╗██╔══██╗████╗ ████║██╔══██╗██╔══██╗██╔════╝</text>
-<text class="b ginL" x="78" y="78" textLength="644" lengthAdjust="spacingAndGlyphs" style="animation-delay:0.26s">██║  ██║█████╗  ███████║██║  ██║██╔████╔██║███████║██║  ██║█████╗  </text>
-<text class="b ginR" x="78" y="95" textLength="644" lengthAdjust="spacingAndGlyphs" style="animation-delay:0.34s">██║  ██║██╔══╝  ██╔══██║██║  ██║██║╚██╔╝██║██╔══██║██║  ██║██╔══╝  </text>
-<text class="b ginL" x="78" y="112" textLength="644" lengthAdjust="spacingAndGlyphs" style="animation-delay:0.42s">██████╔╝███████╗██║  ██║██████╔╝██║ ╚═╝ ██║██║  ██║██████╔╝███████╗</text>
-<text class="b ginR" x="78" y="129" textLength="644" lengthAdjust="spacingAndGlyphs" style="animation-delay:0.5s">╚═════╝ ╚══════╝╚═╝  ╚═╝╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═╝╚═════╝ ╚══════╝</text>
+<text class="b ginL" x="78" y="44" textLength="644" lengthAdjust="spacingAndGlyphs" style="animation-delay:5.18s">██████╗ ███████╗ █████╗ ██████╗ ███╗   ███╗ █████╗ ██████╗ ███████╗</text>
+<text class="b ginR" x="78" y="61" textLength="644" lengthAdjust="spacingAndGlyphs" style="animation-delay:5.26s">██╔══██╗██╔════╝██╔══██╗██╔══██╗████╗ ████║██╔══██╗██╔══██╗██╔════╝</text>
+<text class="b ginL" x="78" y="78" textLength="644" lengthAdjust="spacingAndGlyphs" style="animation-delay:5.34s">██║  ██║█████╗  ███████║██║  ██║██╔████╔██║███████║██║  ██║█████╗  </text>
+<text class="b ginR" x="78" y="95" textLength="644" lengthAdjust="spacingAndGlyphs" style="animation-delay:5.42s">██║  ██║██╔══╝  ██╔══██║██║  ██║██║╚██╔╝██║██╔══██║██║  ██║██╔══╝  </text>
+<text class="b ginL" x="78" y="112" textLength="644" lengthAdjust="spacingAndGlyphs" style="animation-delay:5.5s">██████╔╝███████╗██║  ██║██████╔╝██║ ╚═╝ ██║██║  ██║██████╔╝███████╗</text>
+<text class="b ginR" x="78" y="129" textLength="644" lengthAdjust="spacingAndGlyphs" style="animation-delay:5.58s">╚═════╝ ╚══════╝╚═╝  ╚═╝╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═╝╚═════╝ ╚══════╝</text>
 </g>
 </defs>
 <style>
@@ -27,9 +27,10 @@ text { font-family: 'Fira Code', 'JetBrains Mono', 'DejaVu Sans Mono', Consolas,
 .pulse { fill: #00FFEA; transform-box: fill-box; transform-origin: center; animation: pulse 1.6s ease-in-out infinite; }
 .ginL { animation: ginL .6s steps(1) both; }
 .ginR { animation: ginR .6s steps(1) both; }
-.g1 { fill: #00FFEA; opacity: .8; animation: g1 3s .9s infinite steps(1) backwards; }
-.g2 { fill: #FF2A6D; opacity: .8; animation: g2 3s .9s infinite steps(1) backwards; }
-.flicker { animation: flicker 6s 1s infinite; }
+.g1 { fill: #00FFEA; opacity: .8; animation: g1 3s 5.98s infinite steps(1) backwards; }
+.g2 { fill: #FF2A6D; opacity: .8; animation: g2 3s 5.98s infinite steps(1) backwards; }
+.flicker { animation: flicker 6s 6.08s infinite; }
+.cur { fill: #00FFEA; }
 @keyframes in { from { opacity: 0; transform: translateX(-14px); filter: drop-shadow(0 0 6px #00FFEA); } to { opacity: 1; transform: none; filter: none; } }
 @keyframes pop { 0% { opacity: 0; transform: scale(.6); } 60% { opacity: 1; transform: scale(1.1); } 100% { opacity: 1; transform: scale(1); } }
 @keyframes spin { to { transform: rotate(360deg); } }
@@ -47,78 +48,94 @@ text { font-family: 'Fira Code', 'JetBrains Mono', 'DejaVu Sans Mono', Consolas,
 <use href="#banner" xlink:href="#banner" class="g2"/>
 <use href="#banner" xlink:href="#banner" fill="#E6E6E6"/>
 </g>
-<text x="40" y="172" class="in" style="animation-delay:1.1s"><tspan class="c">[  OK  ]</tspan> Mounted /home/deadmade</text>
-<text x="40" y="194" class="in" style="animation-delay:1.3s"><tspan class="c">[  OK  ]</tspan> Started DedSec uplink</text>
-<text x="40" y="216" class="in" style="animation-delay:1.78s"><tspan class="c">[  OK  ]</tspan> Reached target ctOS bypass</text>
-<text x="40" y="238" class="in" style="animation-delay:2.06s"><tspan class="c">[  OK  ]</tspan> Logged in as <tspan class="c">deadmade</tspan> <tspan class="dim">// developer · tinkerer · cake enthusiast</tspan></text>
-<text x="40" y="270" class="in" style="animation-delay:2.63s"><tspan class="dim">Running system checks...</tspan></text>
-<text x="40" y="292" class="in" style="animation-delay:3.03s" textLength="288">Checking studies <tspan class="dim">...............</tspan></text>
-<g visibility="hidden"><set attributeName="visibility" to="visible" begin="3.03s" end="4.06s"/>
+<g>
+<text x="400" y="60" class="dim" text-anchor="middle">Sun, 04 Oct 2026 · 23:42</text>
+<rect x="160" y="250" width="480" height="190" rx="4" fill="none" stroke="#00FFEA" stroke-opacity=".7"/>
+<rect x="180" y="240" width="90" height="20" fill="#050505"/><text x="225" y="255" class="c" text-anchor="middle">deadPc</text>
+<text x="400" y="294" text-anchor="middle">Welcome back, operator.</text>
+<text x="190" y="340" class="dim">Username:</text><text x="190" y="372" class="dim">Password:</text>
+<text x="400" y="568" text-anchor="middle"><tspan class="c" font-weight="bold">F2</tspan><tspan class="dim"> Change command   </tspan><tspan class="c" font-weight="bold">F3</tspan><tspan class="dim"> Choose session   </tspan><tspan class="c" font-weight="bold">F12</tspan><tspan class="dim"> Power</tspan></text>
+<clipPath id="k813"><rect x="289" y="323" height="22" width="0"><animate attributeName="width" calcMode="discrete" values="0;9;18;27;36;45;54;63;72" keyTimes="0;0.0681;0.2198;0.3141;0.4014;0.5357;0.6521;0.7501;0.8865" begin="1s" dur="1.32s" fill="freeze"/></rect></clipPath>
+<text x="289" y="340" textLength="72" clip-path="url(#k813)">deadmade</text>
+<rect class="cur" x="289" y="327" width="9" height="16" visibility="hidden"><set attributeName="visibility" to="visible" begin="0.3s" end="2.62s"/><animateTransform attributeName="transform" type="translate" calcMode="discrete" values="0;9;18;27;36;45;54;63;72" keyTimes="0;0.0681;0.2198;0.3141;0.4014;0.5357;0.6521;0.7501;0.8865" begin="1s" dur="1.32s" fill="freeze"/></rect>
+<clipPath id="k1542"><rect x="289" y="355" height="22" width="0"><animate attributeName="width" calcMode="discrete" values="0;9;18;27;36;45;54;63;72" keyTimes="0;0.1253;0.233;0.3524;0.4678;0.5983;0.6809;0.7745;0.8959" begin="2.62s" dur="0.96s" fill="freeze"/></rect></clipPath>
+<text x="289" y="372" textLength="72" clip-path="url(#k1542)">********</text>
+<rect class="cur" x="289" y="359" width="9" height="16" visibility="hidden"><set attributeName="visibility" to="visible" begin="2.62s" end="3.88s"/><animateTransform attributeName="transform" type="translate" calcMode="discrete" values="0;9;18;27;36;45;54;63;72" keyTimes="0;0.1253;0.233;0.3524;0.4678;0.5983;0.6809;0.7745;0.8959" begin="2.62s" dur="0.96s" fill="freeze"/></rect>
+<text x="400" y="414" class="in dim" text-anchor="middle" style="animation-delay:4.08s">Starting session: zsh</text>
+<set attributeName="display" to="none" begin="5.08s" fill="freeze"/>
+</g>
+<text x="40" y="172" class="in" style="animation-delay:6.18s"><tspan class="c">[  OK  ]</tspan> Mounted /home/deadmade</text>
+<text x="40" y="194" class="in" style="animation-delay:6.59s"><tspan class="c">[  OK  ]</tspan> Started DedSec uplink</text>
+<text x="40" y="216" class="in" style="animation-delay:6.81s"><tspan class="c">[  OK  ]</tspan> Reached target ctOS bypass</text>
+<text x="40" y="238" class="in" style="animation-delay:7.21s"><tspan class="c">[  OK  ]</tspan> Logged in as <tspan class="c">deadmade</tspan> <tspan class="dim">// developer · tinkerer · cake enthusiast</tspan></text>
+<text x="40" y="270" class="in" style="animation-delay:7.85s"><tspan class="dim">Running system checks...</tspan></text>
+<text x="40" y="292" class="in" style="animation-delay:8.25s" textLength="288">Checking studies <tspan class="dim">...............</tspan></text>
+<g visibility="hidden"><set attributeName="visibility" to="visible" begin="8.25s" end="9.41s"/>
 <circle class="spin" cx="343" cy="287" r="5"/>
 <rect class="track" x="355" y="282" width="90" height="8"/>
-<rect class="bar" x="355" y="282" width="90" height="8" style="animation-delay:3.03s;animation-duration:1.04s"/>
+<rect class="bar" x="355" y="282" width="90" height="8" style="animation-delay:8.25s;animation-duration:1.15s"/>
 </g>
-<text x="337" y="292" class="in" style="animation-delay:4.06s"><tspan class="c">[  OK  ]</tspan> completed, finally</text>
-<text x="40" y="314" class="in" style="animation-delay:4.21s" textLength="288">Checking current_project <tspan class="dim">.......</tspan></text>
-<g visibility="hidden"><set attributeName="visibility" to="visible" begin="4.21s" end="5.13s"/>
+<text x="337" y="292" class="in" style="animation-delay:9.41s"><tspan class="c">[  OK  ]</tspan> completed, finally</text>
+<text x="40" y="314" class="in" style="animation-delay:9.56s" textLength="288">Checking current_project <tspan class="dim">.......</tspan></text>
+<g visibility="hidden"><set attributeName="visibility" to="visible" begin="9.56s" end="10.64s"/>
 <circle class="spin" cx="343" cy="309" r="5"/>
 <rect class="track" x="355" y="304" width="90" height="8"/>
-<rect class="bar" x="355" y="304" width="90" height="8" style="animation-delay:4.21s;animation-duration:0.92s"/>
+<rect class="bar" x="355" y="304" width="90" height="8" style="animation-delay:9.56s;animation-duration:1.08s"/>
 </g>
-<text x="337" y="314" class="in" style="animation-delay:5.13s"><tspan class="c">[  OK  ]</tspan> building &amp; breaking things</text>
-<text x="40" y="336" class="in" style="animation-delay:5.28s" textLength="288">Checking coffee_level <tspan class="dim">..........</tspan></text>
-<g visibility="hidden"><set attributeName="visibility" to="visible" begin="5.28s" end="6.08s"/>
+<text x="337" y="314" class="in" style="animation-delay:10.64s"><tspan class="c">[  OK  ]</tspan> building &amp; breaking things</text>
+<text x="40" y="336" class="in" style="animation-delay:10.79s" textLength="288">Checking coffee_level <tspan class="dim">..........</tspan></text>
+<g visibility="hidden"><set attributeName="visibility" to="visible" begin="10.79s" end="11.47s"/>
 <circle class="spin" cx="343" cy="331" r="5"/>
 <rect class="track" x="355" y="326" width="90" height="8"/>
-<rect class="bar" x="355" y="326" width="90" height="8" style="animation-delay:5.28s;animation-duration:0.8s"/>
+<rect class="bar" x="355" y="326" width="90" height="8" style="animation-delay:10.79s;animation-duration:0.67s"/>
 </g>
-<text x="337" y="336" class="in" style="animation-delay:6.08s"><tspan class="y">[ WARN ]</tspan> critical, refill recommended</text>
-<text x="40" y="358" class="in" style="animation-delay:6.23s" textLength="288">Checking sleep_schedule <tspan class="dim">........</tspan></text>
-<g visibility="hidden"><set attributeName="visibility" to="visible" begin="6.23s" end="7.28s"/>
+<text x="337" y="336" class="in" style="animation-delay:11.47s"><tspan class="y">[ WARN ]</tspan> critical, refill recommended</text>
+<text x="40" y="358" class="in" style="animation-delay:11.62s" textLength="288">Checking sleep_schedule <tspan class="dim">........</tspan></text>
+<g visibility="hidden"><set attributeName="visibility" to="visible" begin="11.62s" end="12.52s"/>
 <circle class="spin" cx="343" cy="353" r="5"/>
 <rect class="track" x="355" y="348" width="90" height="8"/>
-<rect class="bar" x="355" y="348" width="90" height="8" style="animation-delay:6.23s;animation-duration:1.05s"/>
+<rect class="bar" x="355" y="348" width="90" height="8" style="animation-delay:11.62s;animation-duration:0.91s"/>
 </g>
-<text x="337" y="358" class="in" style="animation-delay:7.28s"><tspan class="m">[FAILED]</tspan> undefined behaviour</text>
-<text x="40" y="380" class="in" style="animation-delay:7.43s" textLength="288">Checking cake_supply <tspan class="dim">...........</tspan></text>
-<g visibility="hidden"><set attributeName="visibility" to="visible" begin="7.43s" end="8.49s"/>
+<text x="337" y="358" class="in" style="animation-delay:12.52s"><tspan class="m">[FAILED]</tspan> undefined behaviour</text>
+<text x="40" y="380" class="in" style="animation-delay:12.67s" textLength="288">Checking cake_supply <tspan class="dim">...........</tspan></text>
+<g visibility="hidden"><set attributeName="visibility" to="visible" begin="12.67s" end="13.83s"/>
 <circle class="spin" cx="343" cy="375" r="5"/>
 <rect class="track" x="355" y="370" width="90" height="8"/>
-<rect class="bar" x="355" y="370" width="90" height="8" style="animation-delay:7.43s;animation-duration:1.05s"/>
+<rect class="bar" x="355" y="370" width="90" height="8" style="animation-delay:12.67s;animation-duration:1.15s"/>
 </g>
-<text x="337" y="380" class="in" style="animation-delay:8.49s"><tspan class="c">[  OK  ]</tspan> cakes make everything better</text>
-<text x="40" y="402" class="in" style="animation-delay:8.64s" textLength="288">Checking bugs <tspan class="dim">..................</tspan></text>
-<g visibility="hidden"><set attributeName="visibility" to="visible" begin="8.64s" end="9.56s"/>
+<text x="337" y="380" class="in" style="animation-delay:13.83s"><tspan class="c">[  OK  ]</tspan> cakes make everything better</text>
+<text x="40" y="402" class="in" style="animation-delay:13.98s" textLength="288">Checking bugs <tspan class="dim">..................</tspan></text>
+<g visibility="hidden"><set attributeName="visibility" to="visible" begin="13.98s" end="14.99s"/>
 <circle class="spin" cx="343" cy="397" r="5"/>
 <rect class="track" x="355" y="392" width="90" height="8"/>
-<rect class="bar" x="355" y="392" width="90" height="8" style="animation-delay:8.64s;animation-duration:0.93s"/>
+<rect class="bar" x="355" y="392" width="90" height="8" style="animation-delay:13.98s;animation-duration:1.01s"/>
 </g>
-<text x="337" y="402" class="in" style="animation-delay:9.56s"><tspan class="c">[  OK  ]</tspan> reclassified as features</text>
-<text x="40" y="424" class="in" style="animation-delay:9.71s" textLength="288">Checking works_on_my_machine <tspan class="dim">...</tspan></text>
-<g visibility="hidden"><set attributeName="visibility" to="visible" begin="9.71s" end="10.72s"/>
+<text x="337" y="402" class="in" style="animation-delay:14.99s"><tspan class="c">[  OK  ]</tspan> reclassified as features</text>
+<text x="40" y="424" class="in" style="animation-delay:15.14s" textLength="288">Checking works_on_my_machine <tspan class="dim">...</tspan></text>
+<g visibility="hidden"><set attributeName="visibility" to="visible" begin="15.14s" end="16.13s"/>
 <circle class="spin" cx="343" cy="419" r="5"/>
 <rect class="track" x="355" y="414" width="90" height="8"/>
-<rect class="bar" x="355" y="414" width="90" height="8" style="animation-delay:9.71s;animation-duration:1.01s"/>
+<rect class="bar" x="355" y="414" width="90" height="8" style="animation-delay:15.14s;animation-duration:0.99s"/>
 </g>
-<text x="337" y="424" class="in" style="animation-delay:10.72s"><tspan class="c">[  OK  ]</tspan> reproducible, thanks nix</text>
-<text x="40" y="446" class="in" style="animation-delay:10.87s" textLength="288">Checking vim_exit <tspan class="dim">..............</tspan></text>
-<g visibility="hidden"><set attributeName="visibility" to="visible" begin="10.87s" end="11.85s"/>
+<text x="337" y="424" class="in" style="animation-delay:16.13s"><tspan class="c">[  OK  ]</tspan> reproducible, thanks nix</text>
+<text x="40" y="446" class="in" style="animation-delay:16.28s" textLength="288">Checking vim_exit <tspan class="dim">..............</tspan></text>
+<g visibility="hidden"><set attributeName="visibility" to="visible" begin="16.28s" end="17.22s"/>
 <circle class="spin" cx="343" cy="441" r="5"/>
 <rect class="track" x="355" y="436" width="90" height="8"/>
-<rect class="bar" x="355" y="436" width="90" height="8" style="animation-delay:10.87s;animation-duration:0.98s"/>
+<rect class="bar" x="355" y="436" width="90" height="8" style="animation-delay:16.28s;animation-duration:0.95s"/>
 </g>
-<text x="337" y="446" class="in" style="animation-delay:11.85s"><tspan class="y">[ WARN ]</tspan> still trying :q!</text>
-<text x="40" y="468" class="in" style="animation-delay:12s"><tspan class="dim">8 systems checked · 1 failed · 2 warnings</tspan></text>
-<text x="40" y="500" class="in" style="animation-delay:12.3s"><tspan class="c">[  OK  ]</tspan> Loaded arsenal</text>
-<text x="121" y="522" class="pop c" font-weight="bold" textLength="36" style="animation-delay:12.38s">.NET</text>
-<text x="175" y="522" class="pop c" font-weight="bold" textLength="54" style="animation-delay:12.46s">Blazor</text>
-<text x="247" y="522" class="pop c" font-weight="bold" textLength="18" style="animation-delay:12.54s">C#</text>
-<text x="283" y="522" class="pop c" font-weight="bold" textLength="27" style="animation-delay:12.62s">Git</text>
-<text x="328" y="522" class="pop c" font-weight="bold" textLength="54" style="animation-delay:12.7s">GitHub</text>
-<text x="400" y="522" class="pop c" font-weight="bold" textLength="45" style="animation-delay:12.78s">LaTeX</text>
-<text x="463" y="522" class="pop c" font-weight="bold" textLength="72" style="animation-delay:12.86s">Markdown</text>
-<text x="553" y="522" class="pop c" font-weight="bold" textLength="54" style="animation-delay:12.94s">Python</text>
-<g class="in" style="animation-delay:13.54s"><circle class="pulse" cx="46" cy="555" r="5"/></g>
-<text x="60" y="560" class="in" style="animation-delay:13.54s"><tspan class="c" font-weight="bold">SYSTEM ONLINE</tspan>  <tspan class="dim">deadPc · nixos · uptime ∞</tspan></text>
+<text x="337" y="446" class="in" style="animation-delay:17.22s"><tspan class="y">[ WARN ]</tspan> still trying :q!</text>
+<text x="40" y="468" class="in" style="animation-delay:17.37s"><tspan class="dim">8 systems checked · 1 failed · 2 warnings</tspan></text>
+<text x="40" y="500" class="in" style="animation-delay:17.67s"><tspan class="c">[  OK  ]</tspan> Loaded arsenal</text>
+<text x="121" y="522" class="pop c" font-weight="bold" textLength="36" style="animation-delay:17.75s">.NET</text>
+<text x="175" y="522" class="pop c" font-weight="bold" textLength="54" style="animation-delay:17.83s">Blazor</text>
+<text x="247" y="522" class="pop c" font-weight="bold" textLength="18" style="animation-delay:17.91s">C#</text>
+<text x="283" y="522" class="pop c" font-weight="bold" textLength="27" style="animation-delay:17.99s">Git</text>
+<text x="328" y="522" class="pop c" font-weight="bold" textLength="54" style="animation-delay:18.07s">GitHub</text>
+<text x="400" y="522" class="pop c" font-weight="bold" textLength="45" style="animation-delay:18.15s">LaTeX</text>
+<text x="463" y="522" class="pop c" font-weight="bold" textLength="72" style="animation-delay:18.23s">Markdown</text>
+<text x="553" y="522" class="pop c" font-weight="bold" textLength="54" style="animation-delay:18.31s">Python</text>
+<g class="in" style="animation-delay:18.91s"><circle class="pulse" cx="46" cy="555" r="5"/></g>
+<text x="60" y="560" class="in" style="animation-delay:18.91s"><tspan class="c" font-weight="bold">SYSTEM ONLINE</tspan>  <tspan class="dim">deadPc · nixos · uptime ∞</tspan></text>
 <rect width="800" height="592" rx="10" fill="url(#scan)" pointer-events="none"/>
 </svg>
