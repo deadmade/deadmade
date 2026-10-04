@@ -53,29 +53,17 @@ function lines(at, ...rows) {
 // "Checking <name> ....." lines, each resolving to a status after a pause. Returns when the last one resolves.
 function checks(at, items) {
   for (const [name, status, note] of items) {
-    const label = `Checking ${name} `.padEnd(28, '.');
-    const cls = status === 'OK' ? 'c' : 'm';
+    const label = `Checking ${name} `.padEnd(32, '.');
+    const [tag, cls] = { OK: ['[  OK  ]', 'c'], WARN: ['[ WARN ]', 'y'], FAILED: ['[FAILED]', 'm'] }[status];
     out += `<text x="40" y="${y}" textLength="${label.length * CW}" visibility="hidden">${show(at)}${label.replace(/\.+$/, '<tspan class="dim">$&</tspan>')}</text>\n`;
     at += 0.5 + 0.6 * rand();
-    out += `<text x="${40 + (label.length + 1) * CW}" y="${y}" visibility="hidden">${show(at)}<tspan class="${cls}">[ ${status} ]</tspan> ${note}</text>\n`;
+    out += `<text x="${40 + (label.length + 1) * CW}" y="${y}" visibility="hidden">${show(at)}<tspan class="${cls}">${tag}</tspan> ${note}</text>\n`;
     at += 0.25;
     y += 22;
   }
+  const count = (st) => items.filter((i) => i[1] === st).length;
+  lines(at, `<tspan class="dim">${items.length} systems checked · ${count('FAILED')} failed · ${count('WARN')} warnings</tspan>`);
   return at;
-}
-
-function bat(at, file, rows) {
-  const top = y - 14;
-  out += `<g visibility="hidden">${show(at)}\n`;
-  out += `<text x="118" y="${top + 20}"><tspan class="dim">File: </tspan>${file}</text>\n`;
-  rows.forEach((r, i) => {
-    const ry = top + 50 + i * 22;
-    out += `<text x="76" y="${ry}" class="dim" text-anchor="end">${i + 1}</text><text x="118" y="${ry}">${r}</text>\n`;
-  });
-  const bottom = top + 50 + (rows.length - 1) * 22 + 10;
-  for (const ly of [top, top + 30, bottom]) out += `<line class="rule" x1="40" y1="${ly}" x2="760" y2="${ly}"/>`;
-  out += `<line class="rule" x1="107" y1="${top}" x2="107" y2="${bottom}"/>\n</g>\n`;
-  y = bottom + 24;
 }
 
 // --- tuigreet-style login, removed from the display once the session starts ---
@@ -84,7 +72,7 @@ out += `<g>\n<text x="400" y="60" class="dim" text-anchor="middle">Sun, 04 Oct 2
 <rect x="180" y="240" width="90" height="20" fill="#050505"/><text x="225" y="255" class="c" text-anchor="middle">deadPc</text>
 <text x="400" y="294" text-anchor="middle">Welcome back, operator.</text>
 <text x="190" y="340" class="dim">Username:</text><text x="190" y="372" class="dim">Password:</text>
-<text x="400" y="684" text-anchor="middle"><tspan class="c" font-weight="bold">F2</tspan><tspan class="dim"> Change command   </tspan><tspan class="c" font-weight="bold">F3</tspan><tspan class="dim"> Choose session   </tspan><tspan class="c" font-weight="bold">F12</tspan><tspan class="dim"> Power</tspan></text>\n`;
+<text x="400" y="BAR_Y" text-anchor="middle"><tspan class="c" font-weight="bold">F2</tspan><tspan class="dim"> Change command   </tspan><tspan class="c" font-weight="bold">F3</tspan><tspan class="dim"> Choose session   </tspan><tspan class="c" font-weight="bold">F12</tspan><tspan class="dim"> Power</tspan></text>\n`;
 y = 340;
 t = 1;
 let typed = type('deadmade', 289, '', SPEED, 0.3, (end) => end + 0.3) + 0.3;
@@ -102,21 +90,19 @@ t = type('> ACCESS GRANTED. WELCOME TO DEDSEC', 40, 'c', 0.06, t, (end) => end +
 y += 38;
 
 cmd('whoami', (at) => lines(at, 'deadmade // developer · tinkerer · cake enthusiast'));
-cmd('nix shell nixpkgs#bat', (at) =>
-  lines(at, `<tspan class="dim">copying path '/nix/store/k1jx9q…-bat-0.25.0' from 'https://cache.nixos.org'...</tspan>`));
-cmd('system-status', (at) => {
-  at = checks(at, [
-    ['studies', 'OK', 'completed'],
+cmd('nix run .#system-status', (at) =>
+  checks(at, [
+    ['studies', 'OK', 'completed, finally'],
     ['current_project', 'OK', 'building &amp; breaking things'],
-    ['cake_supply', '!!', 'cakes make everything better'],
-  ]);
-  lines(at, '<tspan class="dim">3 systems checked · 0 failed · 1 warning</tspan>');
-  return at;
-});
+    ['coffee_level', 'WARN', 'critical, refill recommended'],
+    ['sleep_schedule', 'FAILED', 'undefined behaviour'],
+    ['cake_supply', 'OK', 'cakes make everything better'],
+    ['bugs', 'OK', 'reclassified as features'],
+    ['works_on_my_machine', 'OK', 'reproducible, thanks nix'],
+    ['vim_exit', 'WARN', 'still trying :q!'],
+  ]));
 cmd('ls ~/arsenal', (at) =>
   lines(at, ['.NET', 'Blazor', 'C#', 'Git', 'GitHub', 'LaTeX', 'Markdown', 'Python'].map((d) => `<tspan class="c" font-weight="bold">${d}</tspan>`).join('  ')));
-cmd('bat manifesto.md', (at) =>
-  bat(at, 'manifesto.md', ['We are deadmade. We write code. We break it. We fix it.', 'Information wants to be free.']));
 cmd('exit', (at) => {
   lines(at, 'logout', 'Connection to deadPc terminated.');
   out += `<rect class="cur blink" x="40" y="${y - 13}" width="9" height="16" visibility="hidden">${show(at + 0.4)}</rect>\n`;
@@ -148,7 +134,7 @@ text { font-family: 'Fira Code', 'JetBrains Mono', 'DejaVu Sans Mono', Consolas,
 .m { fill: #FF2A6D; }
 .dim { fill: #6B6B6B; }
 .cur { fill: #00FFEA; }
-.rule { stroke: #333; stroke-width: 1; }
+.y { fill: #F5D300; }
 .g1 { fill: #00FFEA; opacity: .8; animation: g1 3s infinite steps(1); }
 .g2 { fill: #FF2A6D; opacity: .8; animation: g2 3s infinite steps(1); }
 .blink { animation: blink 1s infinite steps(1); }
@@ -164,7 +150,7 @@ text { font-family: 'Fira Code', 'JetBrains Mono', 'DejaVu Sans Mono', Consolas,
 <use href="#banner" xlink:href="#banner" class="g2"/>
 <use href="#banner" xlink:href="#banner" fill="#E6E6E6"/>
 </g>
-${out}<rect width="800" height="${H}" rx="10" fill="url(#scan)" pointer-events="none"/>
+${out.replace("BAR_Y", H - 24)}<rect width="800" height="${H}" rx="10" fill="url(#scan)" pointer-events="none"/>
 </svg>
 `);
 console.log(`dedsec.svg: ${H}px tall, runs ${t.toFixed(1)}s`);
