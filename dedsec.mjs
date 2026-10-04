@@ -40,8 +40,7 @@ function cmd(command, output) {
   t += 0.6;
   const at = type(command, CMD_X, '', SPEED, from, (end) => end + 0.4) + 0.4;
   y += 22;
-  output(at);
-  t = at + 0.8;
+  t = (output(at) ?? at) + 0.8;
   y += 10;
 }
 
@@ -49,6 +48,20 @@ function lines(at, ...rows) {
   out += `<g visibility="hidden">${show(at)}\n`;
   for (const r of rows) (out += `<text x="40" y="${y}">${r}</text>\n`), (y += 22);
   out += '</g>\n';
+}
+
+// "Checking <name> ....." lines, each resolving to a status after a pause. Returns when the last one resolves.
+function checks(at, items) {
+  for (const [name, status, note] of items) {
+    const label = `Checking ${name} `.padEnd(28, '.');
+    const cls = status === 'OK' ? 'c' : 'm';
+    out += `<text x="40" y="${y}" textLength="${label.length * CW}" visibility="hidden">${show(at)}${label.replace(/\.+$/, '<tspan class="dim">$&</tspan>')}</text>\n`;
+    at += 0.5 + 0.6 * rand();
+    out += `<text x="${40 + (label.length + 1) * CW}" y="${y}" visibility="hidden">${show(at)}<tspan class="${cls}">[ ${status} ]</tspan> ${note}</text>\n`;
+    at += 0.25;
+    y += 22;
+  }
+  return at;
 }
 
 function bat(at, file, rows) {
@@ -71,7 +84,7 @@ out += `<g>\n<text x="400" y="60" class="dim" text-anchor="middle">Sun, 04 Oct 2
 <rect x="180" y="240" width="90" height="20" fill="#050505"/><text x="225" y="255" class="c" text-anchor="middle">deadPc</text>
 <text x="400" y="294" text-anchor="middle">Welcome back, operator.</text>
 <text x="190" y="340" class="dim">Username:</text><text x="190" y="372" class="dim">Password:</text>
-<text x="400" y="700" text-anchor="middle"><tspan class="c" font-weight="bold">F2</tspan><tspan class="dim"> Change command   </tspan><tspan class="c" font-weight="bold">F3</tspan><tspan class="dim"> Choose session   </tspan><tspan class="c" font-weight="bold">F12</tspan><tspan class="dim"> Power</tspan></text>\n`;
+<text x="400" y="684" text-anchor="middle"><tspan class="c" font-weight="bold">F2</tspan><tspan class="dim"> Change command   </tspan><tspan class="c" font-weight="bold">F3</tspan><tspan class="dim"> Choose session   </tspan><tspan class="c" font-weight="bold">F12</tspan><tspan class="dim"> Power</tspan></text>\n`;
 y = 340;
 t = 1;
 let typed = type('deadmade', 289, '', SPEED, 0.3, (end) => end + 0.3) + 0.3;
@@ -91,12 +104,15 @@ y += 38;
 cmd('whoami', (at) => lines(at, 'deadmade // developer · tinkerer · cake enthusiast'));
 cmd('nix shell nixpkgs#bat', (at) =>
   lines(at, `<tspan class="dim">copying path '/nix/store/k1jx9q…-bat-0.25.0' from 'https://cache.nixos.org'...</tspan>`));
-cmd('bat status.log', (at) =>
-  bat(at, 'status.log', [
-    '<tspan class="c">[ OK ]</tspan> studies <tspan class="dim">............</tspan> COMPLETED',
-    '<tspan class="c">[ OK ]</tspan> currently <tspan class="dim">..........</tspan> building &amp; breaking things',
-    '<tspan class="m">[ !! ]</tspan> fun_fact <tspan class="dim">...........</tspan> cakes make everything better',
-  ]));
+cmd('system-status', (at) => {
+  at = checks(at, [
+    ['studies', 'OK', 'completed'],
+    ['current_project', 'OK', 'building &amp; breaking things'],
+    ['cake_supply', '!!', 'cakes make everything better'],
+  ]);
+  lines(at, '<tspan class="dim">3 systems checked · 0 failed · 1 warning</tspan>');
+  return at;
+});
 cmd('ls ~/arsenal', (at) =>
   lines(at, ['.NET', 'Blazor', 'C#', 'Git', 'GitHub', 'LaTeX', 'Markdown', 'Python'].map((d) => `<tspan class="c" font-weight="bold">${d}</tspan>`).join('  ')));
 cmd('bat manifesto.md', (at) =>
