@@ -1,132 +1,93 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="800" height="726" viewBox="0 0 800 726" role="img" aria-labelledby="t">
-  <title id="t">deadmade // DedSec terminal profile on deadPc</title>
-  <!--
-    Grid: 15px monospace forced to 9px per char via textLength, so typed text, clips and cursors line up in any font.
-    Typing = clip rect / cursor stepping 9px per char (calcMode discrete), dur = (chars + 1) * 0.08s.
-  -->
-  <defs>
-    <pattern id="scan" width="4" height="4" patternUnits="userSpaceOnUse">
-      <rect width="4" height="1" fill="#00FFEA" opacity=".05"/>
-    </pattern>
-    <clipPath id="k0"><rect x="40" y="155" height="22" width="0"><animate attributeName="width" calcMode="discrete" values="0;9;18;27;36;45;54;63;72;81;90;99;108;117;126;135;144;153;162;171;180;189;198;207;216;225;234;243;252;261;270;279;288;297;306;315" begin=".3s" dur="2.16s" fill="freeze"/></rect></clipPath>
-    <clipPath id="k1"><rect x="229" y="193" height="22" width="0"><animate attributeName="width" calcMode="discrete" values="0;9;18;27;36;45;54" begin="3.3s" dur=".56s" fill="freeze"/></rect></clipPath>
-    <clipPath id="k2"><rect x="229" y="247" height="22" width="0"><animate attributeName="width" calcMode="discrete" values="0;9;18;27;36;45;54;63;72;81;90;99;108;117;126;135;144;153;162;171;180;189" begin="5.1s" dur="1.76s" fill="freeze"/></rect></clipPath>
-    <clipPath id="k3"><rect x="229" y="301" height="22" width="0"><animate attributeName="width" calcMode="discrete" values="0;9;18;27;36;45;54;63;72;81;90;99;108;117;126" begin="8.4s" dur="1.2s" fill="freeze"/></rect></clipPath>
-    <clipPath id="k4"><rect x="229" y="453" height="22" width="0"><animate attributeName="width" calcMode="discrete" values="0;9;18;27;36;45;54;63;72;81;90;99;108" begin="11s" dur="1.04s" fill="freeze"/></rect></clipPath>
-    <clipPath id="k5"><rect x="229" y="529" height="22" width="0"><animate attributeName="width" calcMode="discrete" values="0;9;18;27;36;45;54;63;72;81;90;99;108;117;126;135;144" begin="13.4s" dur="1.36s" fill="freeze"/></rect></clipPath>
-    <clipPath id="k6"><rect x="229" y="659" height="22" width="0"><animate attributeName="width" calcMode="discrete" values="0;9;18;27;36" begin="16.2s" dur=".4s" fill="freeze"/></rect></clipPath>
-    <!-- ANSI Shadow banner; textLength keeps all rows the same width whatever monospace font the viewer has -->
-    <g id="banner" xml:space="preserve">
-      <text class="b" x="78" y="44" textLength="644" lengthAdjust="spacingAndGlyphs">██████╗ ███████╗ █████╗ ██████╗ ███╗   ███╗ █████╗ ██████╗ ███████╗</text>
-      <text class="b" x="78" y="61" textLength="644" lengthAdjust="spacingAndGlyphs">██╔══██╗██╔════╝██╔══██╗██╔══██╗████╗ ████║██╔══██╗██╔══██╗██╔════╝</text>
-      <text class="b" x="78" y="78" textLength="644" lengthAdjust="spacingAndGlyphs">██║  ██║█████╗  ███████║██║  ██║██╔████╔██║███████║██║  ██║█████╗  </text>
-      <text class="b" x="78" y="95" textLength="644" lengthAdjust="spacingAndGlyphs">██║  ██║██╔══╝  ██╔══██║██║  ██║██║╚██╔╝██║██╔══██║██║  ██║██╔══╝  </text>
-      <text class="b" x="78" y="112" textLength="644" lengthAdjust="spacingAndGlyphs">██████╔╝███████╗██║  ██║██████╔╝██║ ╚═╝ ██║██║  ██║██████╔╝███████╗</text>
-      <text class="b" x="78" y="129" textLength="644" lengthAdjust="spacingAndGlyphs">╚═════╝ ╚══════╝╚═╝  ╚═╝╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═╝╚═════╝ ╚══════╝</text>
-    </g>
-  </defs>
-  <style>
-    text { font-family: 'Fira Code', 'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace; fill: #E6E6E6; font-size: 15px; white-space: pre; }
-    .b { fill: inherit; font-size: 16px; }
-    .c { fill: #00FFEA; }
-    .m { fill: #FF2A6D; }
-    .dim { fill: #6B6B6B; }
-    .cur { fill: #00FFEA; }
-    .rule { stroke: #333; stroke-width: 1; }
-    .g1 { fill: #00FFEA; opacity: .8; animation: g1 3s infinite steps(1); }
-    .g2 { fill: #FF2A6D; opacity: .8; animation: g2 3s infinite steps(1); }
-    .tag rect { fill: #000; stroke: #00FFEA; stroke-width: 1; }
-    .tag text { fill: #00FFEA; font-size: 13px; text-anchor: middle; }
-    .blink { animation: blink 1s infinite steps(1); }
-    .flicker { animation: flicker 6s infinite; }
-    @keyframes blink { 50% { opacity: 0; } }
-    @keyframes g1 { 0%, 100% { transform: translate(-2px, 0); } 92% { transform: translate(-7px, 2px); } 95% { transform: translate(5px, -2px); } }
-    @keyframes g2 { 0%, 100% { transform: translate(2px, 0); } 92% { transform: translate(7px, -2px); } 95% { transform: translate(-5px, 2px); } }
-    @keyframes flicker { 0%, 96%, 100% { opacity: 1; } 97% { opacity: .6; } 98% { opacity: 1; } 99% { opacity: .75; } }
-  </style>
-
-  <rect x=".5" y=".5" width="799" height="725" rx="10" fill="#050505" stroke="#00FFEA" stroke-opacity=".6"/>
-
-  <!-- glitch banner -->
-  <g class="flicker">
-    <use href="#banner" xlink:href="#banner" class="g1"/>
-    <use href="#banner" xlink:href="#banner" class="g2"/>
-    <use href="#banner" xlink:href="#banner" fill="#E6E6E6"/>
-  </g>
-
-  <!-- boot line -->
-  <text x="40" y="172" class="c" textLength="315" clip-path="url(#k0)">&gt; ACCESS GRANTED. WELCOME TO DEDSEC</text>
-  <rect class="cur" x="40" y="159" width="9" height="16" visibility="hidden"><set attributeName="visibility" to="visible" begin=".3s" end="2.9s"/><animateTransform attributeName="transform" type="translate" calcMode="discrete" values="0;9;18;27;36;45;54;63;72;81;90;99;108;117;126;135;144;153;162;171;180;189;198;207;216;225;234;243;252;261;270;279;288;297;306;315" begin=".3s" dur="2.16s" fill="freeze"/></rect>
-
-  <!-- $ whoami -->
-  <text x="40" y="210" textLength="180" visibility="hidden"><set attributeName="visibility" to="visible" begin="2.9s" fill="freeze"/><tspan class="dim">[</tspan><tspan class="m">deadmade@deadPc</tspan><tspan class="dim">:</tspan><tspan class="c">~</tspan><tspan class="dim">]$</tspan></text>
-  <text x="229" y="210" textLength="54" clip-path="url(#k1)">whoami</text>
-  <rect class="cur" x="229" y="197" width="9" height="16" visibility="hidden"><set attributeName="visibility" to="visible" begin="2.9s" end="4.2s"/><animateTransform attributeName="transform" type="translate" calcMode="discrete" values="0;9;18;27;36;45;54" begin="3.3s" dur=".56s" fill="freeze"/></rect>
-  <text x="40" y="232" visibility="hidden"><set attributeName="visibility" to="visible" begin="4.2s" fill="freeze"/>deadmade // developer · tinkerer · cake enthusiast</text>
-
-  <!-- $ nix shell nixpkgs#bat -->
-  <text x="40" y="264" textLength="180" visibility="hidden"><set attributeName="visibility" to="visible" begin="4.7s" fill="freeze"/><tspan class="dim">[</tspan><tspan class="m">deadmade@deadPc</tspan><tspan class="dim">:</tspan><tspan class="c">~</tspan><tspan class="dim">]$</tspan></text>
-  <text x="229" y="264" textLength="189" clip-path="url(#k2)">nix shell nixpkgs#bat</text>
-  <rect class="cur" x="229" y="251" width="9" height="16" visibility="hidden"><set attributeName="visibility" to="visible" begin="4.7s" end="7.2s"/><animateTransform attributeName="transform" type="translate" calcMode="discrete" values="0;9;18;27;36;45;54;63;72;81;90;99;108;117;126;135;144;153;162;171;180;189" begin="5.1s" dur="1.76s" fill="freeze"/></rect>
-  <text x="40" y="286" class="dim" font-size="13" visibility="hidden"><set attributeName="visibility" to="visible" begin="7.2s" fill="freeze"/>copying path '/nix/store/k1jx9q…-bat-0.25.0' from 'https://cache.nixos.org'...</text>
-
-  <!-- $ bat status.log -->
-  <text x="40" y="318" textLength="180" visibility="hidden"><set attributeName="visibility" to="visible" begin="8s" fill="freeze"/><tspan class="dim">[</tspan><tspan class="m">deadmade@deadPc</tspan><tspan class="dim">:</tspan><tspan class="c">~</tspan><tspan class="dim">]$</tspan></text>
-  <text x="229" y="318" textLength="126" clip-path="url(#k3)">bat status.log</text>
-  <rect class="cur" x="229" y="305" width="9" height="16" visibility="hidden"><set attributeName="visibility" to="visible" begin="8s" end="9.9s"/><animateTransform attributeName="transform" type="translate" calcMode="discrete" values="0;9;18;27;36;45;54;63;72;81;90;99;108;117;126" begin="8.4s" dur="1.2s" fill="freeze"/></rect>
-  <g visibility="hidden">
-    <set attributeName="visibility" to="visible" begin="9.9s" fill="freeze"/>
-    <line class="rule" x1="40" y1="334" x2="760" y2="334"/>
-    <line class="rule" x1="40" y1="364" x2="760" y2="364"/>
-    <line class="rule" x1="40" y1="438" x2="760" y2="438"/>
-    <line class="rule" x1="107" y1="334" x2="107" y2="438"/>
-    <text x="118" y="354"><tspan class="dim">File: </tspan>status.log</text>
-    <text x="76" y="384" class="dim" text-anchor="end">1</text>
-    <text x="76" y="406" class="dim" text-anchor="end">2</text>
-    <text x="76" y="428" class="dim" text-anchor="end">3</text>
-    <text x="118" y="384"><tspan class="c">[ OK ]</tspan> studies <tspan class="dim">............</tspan> COMPLETED</text>
-    <text x="118" y="406"><tspan class="c">[ OK ]</tspan> currently <tspan class="dim">..........</tspan> building &amp; breaking things</text>
-    <text x="118" y="428"><tspan class="m">[ !! ]</tspan> fun_fact <tspan class="dim">...........</tspan> cakes make everything better</text>
-  </g>
-
-  <!-- $ ls ~/arsenal -->
-  <text x="40" y="470" textLength="180" visibility="hidden"><set attributeName="visibility" to="visible" begin="10.6s" fill="freeze"/><tspan class="dim">[</tspan><tspan class="m">deadmade@deadPc</tspan><tspan class="dim">:</tspan><tspan class="c">~</tspan><tspan class="dim">]$</tspan></text>
-  <text x="229" y="470" textLength="108" clip-path="url(#k4)">ls ~/arsenal</text>
-  <rect class="cur" x="229" y="457" width="9" height="16" visibility="hidden"><set attributeName="visibility" to="visible" begin="10.6s" end="12.3s"/><animateTransform attributeName="transform" type="translate" calcMode="discrete" values="0;9;18;27;36;45;54;63;72;81;90;99;108" begin="11s" dur="1.04s" fill="freeze"/></rect>
-  <g class="tag">
-    <g visibility="hidden"><set attributeName="visibility" to="visible" begin="12.3s" fill="freeze"/><rect x="40" y="482" width="44" height="26"/><text x="62" y="500">C#</text></g>
-    <g visibility="hidden"><set attributeName="visibility" to="visible" begin="12.36s" fill="freeze"/><rect x="94" y="482" width="60" height="26"/><text x="124" y="500">.NET</text></g>
-    <g visibility="hidden"><set attributeName="visibility" to="visible" begin="12.42s" fill="freeze"/><rect x="164" y="482" width="76" height="26"/><text x="202" y="500">Blazor</text></g>
-    <g visibility="hidden"><set attributeName="visibility" to="visible" begin="12.48s" fill="freeze"/><rect x="250" y="482" width="76" height="26"/><text x="288" y="500">Python</text></g>
-    <g visibility="hidden"><set attributeName="visibility" to="visible" begin="12.54s" fill="freeze"/><rect x="336" y="482" width="68" height="26"/><text x="370" y="500">LaTeX</text></g>
-    <g visibility="hidden"><set attributeName="visibility" to="visible" begin="12.6s" fill="freeze"/><rect x="414" y="482" width="92" height="26"/><text x="460" y="500">Markdown</text></g>
-    <g visibility="hidden"><set attributeName="visibility" to="visible" begin="12.66s" fill="freeze"/><rect x="516" y="482" width="52" height="26"/><text x="542" y="500">Git</text></g>
-    <g visibility="hidden"><set attributeName="visibility" to="visible" begin="12.72s" fill="freeze"/><rect x="578" y="482" width="76" height="26"/><text x="616" y="500">GitHub</text></g>
-  </g>
-
-  <!-- $ bat manifesto.md -->
-  <text x="40" y="546" textLength="180" visibility="hidden"><set attributeName="visibility" to="visible" begin="13s" fill="freeze"/><tspan class="dim">[</tspan><tspan class="m">deadmade@deadPc</tspan><tspan class="dim">:</tspan><tspan class="c">~</tspan><tspan class="dim">]$</tspan></text>
-  <text x="229" y="546" textLength="144" clip-path="url(#k5)">bat manifesto.md</text>
-  <rect class="cur" x="229" y="533" width="9" height="16" visibility="hidden"><set attributeName="visibility" to="visible" begin="13s" end="15.1s"/><animateTransform attributeName="transform" type="translate" calcMode="discrete" values="0;9;18;27;36;45;54;63;72;81;90;99;108;117;126;135;144" begin="13.4s" dur="1.36s" fill="freeze"/></rect>
-  <g visibility="hidden">
-    <set attributeName="visibility" to="visible" begin="15.1s" fill="freeze"/>
-    <line class="rule" x1="40" y1="562" x2="760" y2="562"/>
-    <line class="rule" x1="40" y1="592" x2="760" y2="592"/>
-    <line class="rule" x1="40" y1="644" x2="760" y2="644"/>
-    <line class="rule" x1="107" y1="562" x2="107" y2="644"/>
-    <text x="118" y="582"><tspan class="dim">File: </tspan>manifesto.md</text>
-    <text x="76" y="612" class="dim" text-anchor="end">1</text>
-    <text x="76" y="634" class="dim" text-anchor="end">2</text>
-    <text x="118" y="612" font-style="italic"><tspan class="m">&gt;</tspan> We are deadmade. We write code. We break it. We fix it.</text>
-    <text x="118" y="634" font-style="italic"><tspan class="m">&gt;</tspan> <tspan class="dim">Information wants to be free.</tspan></text>
-  </g>
-
-  <!-- $ exit -->
-  <text x="40" y="676" textLength="180" visibility="hidden"><set attributeName="visibility" to="visible" begin="15.8s" fill="freeze"/><tspan class="dim">[</tspan><tspan class="m">deadmade@deadPc</tspan><tspan class="dim">:</tspan><tspan class="c">~</tspan><tspan class="dim">]$</tspan></text>
-  <text x="229" y="676" textLength="36" clip-path="url(#k6)">exit</text>
-  <rect class="cur" x="229" y="663" width="9" height="16" visibility="hidden"><set attributeName="visibility" to="visible" begin="15.8s" end="16.9s"/><animateTransform attributeName="transform" type="translate" calcMode="discrete" values="0;9;18;27;36" begin="16.2s" dur=".4s" fill="freeze"/></rect>
-  <text x="40" y="698" class="c" textLength="216" visibility="hidden"><set attributeName="visibility" to="visible" begin="16.9s" fill="freeze"/>// CONNECTION TERMINATED</text>
-  <rect class="cur blink" x="265" y="685" width="9" height="16" visibility="hidden"><set attributeName="visibility" to="visible" begin="16.9s" fill="freeze"/></rect>
-
-  <rect width="800" height="726" rx="10" fill="url(#scan)" pointer-events="none"/>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="800" height="738" viewBox="0 0 800 738" role="img" aria-labelledby="t">
+<title id="t">deadmade // DedSec terminal profile on deadPc</title>
+<!-- generated by dedsec.mjs, edit that instead -->
+<defs>
+<pattern id="scan" width="4" height="4" patternUnits="userSpaceOnUse"><rect width="4" height="1" fill="#00FFEA" opacity=".05"/></pattern>
+<g id="banner" xml:space="preserve">
+<text class="b" x="78" y="44" textLength="644" lengthAdjust="spacingAndGlyphs">██████╗ ███████╗ █████╗ ██████╗ ███╗   ███╗ █████╗ ██████╗ ███████╗</text>
+<text class="b" x="78" y="61" textLength="644" lengthAdjust="spacingAndGlyphs">██╔══██╗██╔════╝██╔══██╗██╔══██╗████╗ ████║██╔══██╗██╔══██╗██╔════╝</text>
+<text class="b" x="78" y="78" textLength="644" lengthAdjust="spacingAndGlyphs">██║  ██║█████╗  ███████║██║  ██║██╔████╔██║███████║██║  ██║█████╗  </text>
+<text class="b" x="78" y="95" textLength="644" lengthAdjust="spacingAndGlyphs">██║  ██║██╔══╝  ██╔══██║██║  ██║██║╚██╔╝██║██╔══██║██║  ██║██╔══╝  </text>
+<text class="b" x="78" y="112" textLength="644" lengthAdjust="spacingAndGlyphs">██████╔╝███████╗██║  ██║██████╔╝██║ ╚═╝ ██║██║  ██║██████╔╝███████╗</text>
+<text class="b" x="78" y="129" textLength="644" lengthAdjust="spacingAndGlyphs">╚═════╝ ╚══════╝╚═╝  ╚═╝╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═╝╚═════╝ ╚══════╝</text>
+</g>
+</defs>
+<style>
+text { font-family: 'Fira Code', 'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace; fill: #E6E6E6; font-size: 15px; white-space: pre; }
+.b { fill: inherit; font-size: 16px; }
+.c { fill: #00FFEA; }
+.m { fill: #FF2A6D; }
+.dim { fill: #6B6B6B; }
+.cur { fill: #00FFEA; }
+.rule { stroke: #333; stroke-width: 1; }
+.g1 { fill: #00FFEA; opacity: .8; animation: g1 3s infinite steps(1); }
+.g2 { fill: #FF2A6D; opacity: .8; animation: g2 3s infinite steps(1); }
+.blink { animation: blink 1s infinite steps(1); }
+.flicker { animation: flicker 6s infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+@keyframes g1 { 0%, 100% { transform: translate(-2px, 0); } 92% { transform: translate(-7px, 2px); } 95% { transform: translate(5px, -2px); } }
+@keyframes g2 { 0%, 100% { transform: translate(2px, 0); } 92% { transform: translate(7px, -2px); } 95% { transform: translate(-5px, 2px); } }
+@keyframes flicker { 0%, 96%, 100% { opacity: 1; } 97% { opacity: .6; } 98% { opacity: 1; } 99% { opacity: .75; } }
+</style>
+<rect x=".5" y=".5" width="799" height="737" rx="10" fill="#050505" stroke="#00FFEA" stroke-opacity=".6"/>
+<g class="flicker">
+<use href="#banner" xlink:href="#banner" class="g1"/>
+<use href="#banner" xlink:href="#banner" class="g2"/>
+<use href="#banner" xlink:href="#banner" fill="#E6E6E6"/>
+</g>
+<clipPath id="k0"><rect x="40" y="155" height="22" width="0"><animate attributeName="width" calcMode="discrete" values="0;9;18;27;36;45;54;63;72;81;90;99;108;117;126;135;144;153;162;171;180;189;198;207;216;225;234;243;252;261;270;279;288;297;306;315" keyTimes="0;0.016;0.0515;0.0737;0.0941;0.1256;0.1529;0.1759;0.2079;0.2399;0.2674;0.298;0.3275;0.3608;0.3819;0.4059;0.4369;0.4677;0.4848;0.5154;0.5413;0.5769;0.61;0.6286;0.6555;0.6911;0.7217;0.7514;0.7797;0.8151;0.8504;0.8742;0.8974;0.9311;0.9542;0.9734" begin="0.3s" dur="2.25s" fill="freeze"/></rect></clipPath>
+<text x="40" y="172" class="c" textLength="315" clip-path="url(#k0)">&gt; ACCESS GRANTED. WELCOME TO DEDSEC</text>
+<rect class="cur" x="40" y="159" width="9" height="16" visibility="hidden"><set attributeName="visibility" to="visible" begin="0.3s" end="3.15s"/><animateTransform attributeName="transform" type="translate" calcMode="discrete" values="0;9;18;27;36;45;54;63;72;81;90;99;108;117;126;135;144;153;162;171;180;189;198;207;216;225;234;243;252;261;270;279;288;297;306;315" keyTimes="0;0.016;0.0515;0.0737;0.0941;0.1256;0.1529;0.1759;0.2079;0.2399;0.2674;0.298;0.3275;0.3608;0.3819;0.4059;0.4369;0.4677;0.4848;0.5154;0.5413;0.5769;0.61;0.6286;0.6555;0.6911;0.7217;0.7514;0.7797;0.8151;0.8504;0.8742;0.8974;0.9311;0.9542;0.9734" begin="0.3s" dur="2.25s" fill="freeze"/></rect>
+<text x="40" y="210" textLength="180" visibility="hidden"><set attributeName="visibility" to="visible" begin="3.15s" fill="freeze"/><tspan class="dim">[</tspan><tspan class="m">deadmade@deadPc</tspan><tspan class="dim">:</tspan><tspan class="c">~</tspan><tspan class="dim">]$</tspan></text>
+<clipPath id="k1638"><rect x="229" y="193" height="22" width="0"><animate attributeName="width" calcMode="discrete" values="0;9;18;27;36;45;54" keyTimes="0;0.1165;0.2475;0.3636;0.5512;0.6966;0.861" begin="3.75s" dur="1.08s" fill="freeze"/></rect></clipPath>
+<text x="229" y="210" textLength="54" clip-path="url(#k1638)">whoami</text>
+<rect class="cur" x="229" y="197" width="9" height="16" visibility="hidden"><set attributeName="visibility" to="visible" begin="3.15s" end="5.23s"/><animateTransform attributeName="transform" type="translate" calcMode="discrete" values="0;9;18;27;36;45;54" keyTimes="0;0.1165;0.2475;0.3636;0.5512;0.6966;0.861" begin="3.75s" dur="1.08s" fill="freeze"/></rect>
+<g visibility="hidden"><set attributeName="visibility" to="visible" begin="5.23s" fill="freeze"/>
+<text x="40" y="232">deadmade // developer · tinkerer · cake enthusiast</text>
+</g>
+<text x="40" y="264" textLength="180" visibility="hidden"><set attributeName="visibility" to="visible" begin="6.03s" fill="freeze"/><tspan class="dim">[</tspan><tspan class="m">deadmade@deadPc</tspan><tspan class="dim">:</tspan><tspan class="c">~</tspan><tspan class="dim">]$</tspan></text>
+<clipPath id="k2805"><rect x="229" y="247" height="22" width="0"><animate attributeName="width" calcMode="discrete" values="0;9;18;27;36;45;54;63;72;81;90;99;108;117;126;135;144;153;162;171;180;189" keyTimes="0;0.0622;0.0931;0.1322;0.1822;0.2303;0.2751;0.3111;0.3745;0.4052;0.4478;0.4896;0.5436;0.6076;0.6559;0.6909;0.735;0.7745;0.8171;0.8619;0.9033;0.9523" begin="6.63s" dur="3.14s" fill="freeze"/></rect></clipPath>
+<text x="229" y="264" textLength="189" clip-path="url(#k2805)">nix shell nixpkgs#bat</text>
+<rect class="cur" x="229" y="251" width="9" height="16" visibility="hidden"><set attributeName="visibility" to="visible" begin="6.03s" end="10.18s"/><animateTransform attributeName="transform" type="translate" calcMode="discrete" values="0;9;18;27;36;45;54;63;72;81;90;99;108;117;126;135;144;153;162;171;180;189" keyTimes="0;0.0622;0.0931;0.1322;0.1822;0.2303;0.2751;0.3111;0.3745;0.4052;0.4478;0.4896;0.5436;0.6076;0.6559;0.6909;0.735;0.7745;0.8171;0.8619;0.9033;0.9523" begin="6.63s" dur="3.14s" fill="freeze"/></rect>
+<g visibility="hidden"><set attributeName="visibility" to="visible" begin="10.18s" fill="freeze"/>
+<text x="40" y="286"><tspan class="dim">copying path '/nix/store/k1jx9q…-bat-0.25.0' from 'https://cache.nixos.org'...</tspan></text>
+</g>
+<text x="40" y="318" textLength="180" visibility="hidden"><set attributeName="visibility" to="visible" begin="10.98s" fill="freeze"/><tspan class="dim">[</tspan><tspan class="m">deadmade@deadPc</tspan><tspan class="dim">:</tspan><tspan class="c">~</tspan><tspan class="dim">]$</tspan></text>
+<clipPath id="k4366"><rect x="229" y="301" height="22" width="0"><animate attributeName="width" calcMode="discrete" values="0;9;18;27;36;45;54;63;72;81;90;99;108;117;126" keyTimes="0;0.0679;0.1168;0.1992;0.2593;0.3395;0.4084;0.4773;0.5403;0.6028;0.6743;0.7584;0.8155;0.888;0.9378" begin="11.58s" dur="2.41s" fill="freeze"/></rect></clipPath>
+<text x="229" y="318" textLength="126" clip-path="url(#k4366)">bat status.log</text>
+<rect class="cur" x="229" y="305" width="9" height="16" visibility="hidden"><set attributeName="visibility" to="visible" begin="10.98s" end="14.39s"/><animateTransform attributeName="transform" type="translate" calcMode="discrete" values="0;9;18;27;36;45;54;63;72;81;90;99;108;117;126" keyTimes="0;0.0679;0.1168;0.1992;0.2593;0.3395;0.4084;0.4773;0.5403;0.6028;0.6743;0.7584;0.8155;0.888;0.9378" begin="11.58s" dur="2.41s" fill="freeze"/></rect>
+<g visibility="hidden"><set attributeName="visibility" to="visible" begin="14.39s" fill="freeze"/>
+<text x="118" y="346"><tspan class="dim">File: </tspan>status.log</text>
+<text x="76" y="376" class="dim" text-anchor="end">1</text><text x="118" y="376"><tspan class="c">[ OK ]</tspan> studies <tspan class="dim">............</tspan> COMPLETED</text>
+<text x="76" y="398" class="dim" text-anchor="end">2</text><text x="118" y="398"><tspan class="c">[ OK ]</tspan> currently <tspan class="dim">..........</tspan> building &amp; breaking things</text>
+<text x="76" y="420" class="dim" text-anchor="end">3</text><text x="118" y="420"><tspan class="m">[ !! ]</tspan> fun_fact <tspan class="dim">...........</tspan> cakes make everything better</text>
+<line class="rule" x1="40" y1="326" x2="760" y2="326"/><line class="rule" x1="40" y1="356" x2="760" y2="356"/><line class="rule" x1="40" y1="430" x2="760" y2="430"/><line class="rule" x1="107" y1="326" x2="107" y2="430"/>
+</g>
+<text x="40" y="464" textLength="180" visibility="hidden"><set attributeName="visibility" to="visible" begin="15.19s" fill="freeze"/><tspan class="dim">[</tspan><tspan class="m">deadmade@deadPc</tspan><tspan class="dim">:</tspan><tspan class="c">~</tspan><tspan class="dim">]$</tspan></text>
+<clipPath id="k6504"><rect x="229" y="447" height="22" width="0"><animate attributeName="width" calcMode="discrete" values="0;9;18;27;36;45;54;63;72;81;90;99;108" keyTimes="0;0.0878;0.1601;0.231;0.306;0.4074;0.5143;0.5708;0.6739;0.7282;0.8042;0.8635;0.9179" begin="15.79s" dur="1.83s" fill="freeze"/></rect></clipPath>
+<text x="229" y="464" textLength="108" clip-path="url(#k6504)">ls ~/arsenal</text>
+<rect class="cur" x="229" y="451" width="9" height="16" visibility="hidden"><set attributeName="visibility" to="visible" begin="15.19s" end="18.01s"/><animateTransform attributeName="transform" type="translate" calcMode="discrete" values="0;9;18;27;36;45;54;63;72;81;90;99;108" keyTimes="0;0.0878;0.1601;0.231;0.306;0.4074;0.5143;0.5708;0.6739;0.7282;0.8042;0.8635;0.9179" begin="15.79s" dur="1.83s" fill="freeze"/></rect>
+<g visibility="hidden"><set attributeName="visibility" to="visible" begin="18.01s" fill="freeze"/>
+<text x="40" y="486"><tspan class="c" font-weight="bold">.NET</tspan>  <tspan class="c" font-weight="bold">Blazor</tspan>  <tspan class="c" font-weight="bold">C#</tspan>  <tspan class="c" font-weight="bold">Git</tspan>  <tspan class="c" font-weight="bold">GitHub</tspan>  <tspan class="c" font-weight="bold">LaTeX</tspan>  <tspan class="c" font-weight="bold">Markdown</tspan>  <tspan class="c" font-weight="bold">Python</tspan></text>
+</g>
+<text x="40" y="518" textLength="180" visibility="hidden"><set attributeName="visibility" to="visible" begin="18.81s" fill="freeze"/><tspan class="dim">[</tspan><tspan class="m">deadmade@deadPc</tspan><tspan class="dim">:</tspan><tspan class="c">~</tspan><tspan class="dim">]$</tspan></text>
+<clipPath id="k8160"><rect x="229" y="501" height="22" width="0"><animate attributeName="width" calcMode="discrete" values="0;9;18;27;36;45;54;63;72;81;90;99;108;117;126;135;144" keyTimes="0;0.0786;0.1223;0.1845;0.2247;0.2791;0.3395;0.3795;0.4547;0.5283;0.6022;0.6758;0.7504;0.8184;0.8646;0.8988;0.9437" begin="19.41s" dur="2.67s" fill="freeze"/></rect></clipPath>
+<text x="229" y="518" textLength="144" clip-path="url(#k8160)">bat manifesto.md</text>
+<rect class="cur" x="229" y="505" width="9" height="16" visibility="hidden"><set attributeName="visibility" to="visible" begin="18.81s" end="22.48s"/><animateTransform attributeName="transform" type="translate" calcMode="discrete" values="0;9;18;27;36;45;54;63;72;81;90;99;108;117;126;135;144" keyTimes="0;0.0786;0.1223;0.1845;0.2247;0.2791;0.3395;0.3795;0.4547;0.5283;0.6022;0.6758;0.7504;0.8184;0.8646;0.8988;0.9437" begin="19.41s" dur="2.67s" fill="freeze"/></rect>
+<g visibility="hidden"><set attributeName="visibility" to="visible" begin="22.48s" fill="freeze"/>
+<text x="118" y="546"><tspan class="dim">File: </tspan>manifesto.md</text>
+<text x="76" y="576" class="dim" text-anchor="end">1</text><text x="118" y="576">We are deadmade. We write code. We break it. We fix it.</text>
+<text x="76" y="598" class="dim" text-anchor="end">2</text><text x="118" y="598">Information wants to be free.</text>
+<line class="rule" x1="40" y1="526" x2="760" y2="526"/><line class="rule" x1="40" y1="556" x2="760" y2="556"/><line class="rule" x1="40" y1="608" x2="760" y2="608"/><line class="rule" x1="107" y1="526" x2="107" y2="608"/>
+</g>
+<text x="40" y="642" textLength="180" visibility="hidden"><set attributeName="visibility" to="visible" begin="23.28s" fill="freeze"/><tspan class="dim">[</tspan><tspan class="m">deadmade@deadPc</tspan><tspan class="dim">:</tspan><tspan class="c">~</tspan><tspan class="dim">]$</tspan></text>
+<clipPath id="k10036"><rect x="229" y="625" height="22" width="0"><animate attributeName="width" calcMode="discrete" values="0;9;18;27;36" keyTimes="0;0.1596;0.3048;0.5689;0.7585" begin="23.88s" dur="0.62s" fill="freeze"/></rect></clipPath>
+<text x="229" y="642" textLength="36" clip-path="url(#k10036)">exit</text>
+<rect class="cur" x="229" y="629" width="9" height="16" visibility="hidden"><set attributeName="visibility" to="visible" begin="23.28s" end="24.9s"/><animateTransform attributeName="transform" type="translate" calcMode="discrete" values="0;9;18;27;36" keyTimes="0;0.1596;0.3048;0.5689;0.7585" begin="23.88s" dur="0.62s" fill="freeze"/></rect>
+<g visibility="hidden"><set attributeName="visibility" to="visible" begin="24.9s" fill="freeze"/>
+<text x="40" y="664">logout</text>
+<text x="40" y="686">Connection to deadPc terminated.</text>
+</g>
+<rect class="cur blink" x="40" y="695" width="9" height="16" visibility="hidden"><set attributeName="visibility" to="visible" begin="25.3s" fill="freeze"/></rect>
+<rect width="800" height="738" rx="10" fill="url(#scan)" pointer-events="none"/>
 </svg>
