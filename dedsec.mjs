@@ -119,8 +119,14 @@ for (const name of ['.NET', 'Blazor', 'C#', 'Git', 'GitHub', 'LaTeX', 'Markdown'
 y += 38;
 
 t += 0.6;
-out += `<g class="in" ${delay(t)}><circle class="pulse" cx="46" cy="${y - 5}" r="5"/></g>\n`;
-line(t, '<tspan class="c" font-weight="bold">SYSTEM ONLINE</tspan>  <tspan class="dim">deadPc · nixos · uptime ∞</tspan>', 60);
+// ONLINE for a few seconds, then it glitches over to OFFLINE for good
+const off = t + 4;
+const hideAt = `<set attributeName="visibility" to="hidden" begin="${s(off)}" fill="freeze"/>`;
+out += `<g class="in" ${delay(t)}>${hideAt}<circle class="pulse" cx="46" cy="${y - 5}" r="5"/>
+<text x="60" y="${y}"><tspan class="c" font-weight="bold">SYSTEM ONLINE</tspan>  <tspan class="dim">deadPc · nixos · uptime ∞</tspan></text></g>
+<g class="ginL" ${delay(off)}><circle cx="46" cy="${y - 5}" r="5" fill="#FF2A6D"/>
+<text x="60" y="${y}"><tspan class="m" font-weight="bold">SYSTEM OFFLINE</tspan>  <tspan class="dim">deadPc · connection lost</tspan></text></g>\n`;
+t = off;
 y += 22;
 
 const H = y + 10;

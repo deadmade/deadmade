@@ -135,7 +135,9 @@ text { font-family: 'Fira Code', 'JetBrains Mono', 'DejaVu Sans Mono', Consolas,
 <text x="400" y="522" class="pop c" font-weight="bold" textLength="45" style="animation-delay:18.15s">LaTeX</text>
 <text x="463" y="522" class="pop c" font-weight="bold" textLength="72" style="animation-delay:18.23s">Markdown</text>
 <text x="553" y="522" class="pop c" font-weight="bold" textLength="54" style="animation-delay:18.31s">Python</text>
-<g class="in" style="animation-delay:18.91s"><circle class="pulse" cx="46" cy="555" r="5"/></g>
-<text x="60" y="560" class="in" style="animation-delay:18.91s"><tspan class="c" font-weight="bold">SYSTEM ONLINE</tspan>  <tspan class="dim">deadPc · nixos · uptime ∞</tspan></text>
+<g class="in" style="animation-delay:18.91s"><set attributeName="visibility" to="hidden" begin="22.91s" fill="freeze"/><circle class="pulse" cx="46" cy="555" r="5"/>
+<text x="60" y="560"><tspan class="c" font-weight="bold">SYSTEM ONLINE</tspan>  <tspan class="dim">deadPc · nixos · uptime ∞</tspan></text></g>
+<g class="ginL" style="animation-delay:22.91s"><circle cx="46" cy="555" r="5" fill="#FF2A6D"/>
+<text x="60" y="560"><tspan class="m" font-weight="bold">SYSTEM OFFLINE</tspan>  <tspan class="dim">deadPc · connection lost</tspan></text></g>
 <rect width="800" height="592" rx="10" fill="url(#scan)" pointer-events="none"/>
 </svg>
